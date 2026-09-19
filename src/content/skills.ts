@@ -1,0 +1,20 @@
+// Shown as a scrolling strip under the "right now" cells. Order is display order.
+export const tools = [
+  "TypeScript",
+  "Python",
+  "React",
+  "Next.js",
+  "three.js",
+  "scikit-learn",
+  "XGBoost",
+  "NumPy",
+  "Firebase",
+  "C#",
+  "C++",
+  "SQL",
+  "Unity",
+  "Git",
+  "Figma",
+  "Blender",
+  "Arduino",
+];
