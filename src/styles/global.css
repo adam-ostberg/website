@@ -9,8 +9,7 @@
   --accent-2: #d45bb6;
   --ink: #1e1e1e;
   --sans: "Host Grotesk", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --px: "DotGothic16", "JetBrains Mono", monospace;
+  --px: "DotGothic16", ui-monospace, monospace;
   --max: 1200px;
   --pad: clamp(20px, 5vw, 72px);
   --nav-h: 64px;
@@ -178,16 +177,16 @@ ul {
 }
 
 /* ---------- type helpers ---------- */
-/* Pixel face: rendered without anti-aliasing so the dots stay crisp. */
+/*
+ * Pixel face, for UI chrome only (labels, tags, title bars, buttons, nav). Always at 16px, its design
+ * size: anything else renders with uneven glyph widths. Running text uses the sans.
+ */
 .px,
 .label,
-.lede,
 .tag,
 .win__bar,
-.now-cell p,
-.project p,
-.row__text,
-.about__cols li,
+.nav__brand,
+.nav__links a,
 .marquee__group span,
 .project__links a {
   font-family: var(--px);
@@ -301,9 +300,7 @@ ul {
   gap: 24px;
 }
 .nav__brand {
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  font-size: 16px;
 }
 .nav__links {
   display: flex;
@@ -311,9 +308,7 @@ ul {
   gap: 28px;
 }
 .nav__links a:not(.btn) {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.06em;
+  font-size: 16px;
   color: var(--fg-2);
   transition: color 0.2s;
 }
@@ -367,7 +362,7 @@ ul {
     border-bottom: 1px solid var(--line);
   }
   .nav.is-open .nav__links a:not(.btn) {
-    font-size: 15px;
+    font-size: 32px;
   }
 }
 
@@ -554,7 +549,7 @@ ul {
   flex-shrink: 0;
 }
 .marquee__group span {
-  font-size: 18px;
+  font-size: 16px;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
@@ -660,7 +655,7 @@ ul {
   padding-top: 4px;
 }
 .project__links a {
-  font-size: 18px;
+  font-size: 16px;
   transition: background 0.15s, color 0.15s;
 }
 .project__links a:hover {
