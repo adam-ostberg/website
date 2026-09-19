@@ -49,7 +49,7 @@ export function Projects() {
   return (
     <section id="projects" className="section section--light section--cream">
       <div className="container">
-        <SectionHead title="Things I've built." lede="From idea to prototype to something people can use." shape="cube" />
+        <SectionHead title="Things I've built." lede="From idea to prototype to something people can use." shape="pickup" />
         <div className="projects">
           {projects.map((p, i) => (
             <Card p={p} i={i} key={p.title} />

@@ -6,7 +6,7 @@ export function Experience() {
   return (
     <section id="experience" className="section section--light section--sage">
       <div className="container">
-        <SectionHead title="Where I've worked and studied." shape="cluster" />
+        <SectionHead title="Where I've worked and studied." shape="relay" />
 
         <div className="rows">
           {experience.map((e, i) => (

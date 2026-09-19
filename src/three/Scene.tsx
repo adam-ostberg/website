@@ -3,7 +3,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { detectQuality, type Quality } from "../lib/quality";
 import { usePointerTracking } from "../lib/world";
 import { ParticleField } from "./ParticleField";
-import { SectionShapes } from "./SectionShapes";
+import { Stations } from "./robots/Stations";
 
 // Bloom pulls in the postprocessing library, so it loads after the first frame.
 const Effects = lazy(() => import("./Effects").then((m) => ({ default: m.Effects })));
@@ -41,7 +41,7 @@ export function BackgroundScene({ quality }: { quality: Quality }) {
   );
 }
 
-/** Section shapes on a transparent canvas in front of the page, so they sit on the solid section colours. */
+/** Robot stations on a transparent canvas in front of the page, so they sit on the solid section colours. */
 export function ShapesScene({ quality }: { quality: Quality }) {
   const reduced = quality === "reduced";
   if (quality === "none") return null;
@@ -57,7 +57,7 @@ export function ShapesScene({ quality }: { quality: Quality }) {
         <directionalLight position={[5, 8, 6]} intensity={3.2} />
         <directionalLight position={[-6, -2, 4]} intensity={1.4} color="#f386a1" />
         <directionalLight position={[3, 2, -6]} intensity={2.2} color="#9fd0ff" />
-        <SectionShapes frozen={reduced} />
+        <Stations frozen={reduced} />
         {reduced && <InvalidateOnScroll />}
       </Canvas>
     </div>

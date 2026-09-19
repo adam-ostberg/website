@@ -26,7 +26,7 @@ export function Now() {
   return (
     <section id="now" className="section section--light section--sky">
       <div className="container">
-        <SectionHead title="Studying AI, working with data, looking for the next step." shape="frame" />
+        <SectionHead title="Studying AI, working with data, looking for the next step." shape="arm" />
         <div className="win" data-reveal>
           <div className="win__bar">
             <span>status.txt</span>

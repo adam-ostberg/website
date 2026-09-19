@@ -7,7 +7,7 @@ export function About() {
   return (
     <section id="about" className="section section--light section--lavender">
       <div className="container">
-        <SectionHead title="Beyond the code." shape="octa" />
+        <SectionHead title="Beyond the code." shape="stack" />
         <div className="about">
           <figure className="about__portrait win" data-reveal>
             <div className="win__bar">

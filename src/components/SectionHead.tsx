@@ -1,11 +1,11 @@
-import type { Variant } from "../three/shapes";
+import type { StationKind } from "../three/robots/Stations";
 
 type Props = {
   title: string;
   lede?: string;
-  /** Which 3D shape floats next to the heading. Omit for none. */
-  shape?: Variant;
-  /** Colour of the shape, defaults to dark ink. */
+  /** Which robot station plays next to the heading. Omit for none. */
+  shape?: StationKind;
+  /** Colour of the robots, defaults to dark ink. */
   ink?: string;
   accent?: string;
 };
