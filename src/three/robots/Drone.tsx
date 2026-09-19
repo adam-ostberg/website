@@ -8,7 +8,7 @@ import { kf, type Key } from "./timeline";
 /**
  * Quadcopter. `tilt` is the bank to settle towards, `spin` the rotor speed (rad/s),
  * `cable` the hanging cable length below the body (0 = retracted); when `carrying`,
- * a package hangs from the hook.
+ * a package hangs from the hook (a labelled one if `labeled`).
  */
 export type DroneState = {
   x: number;
@@ -17,6 +17,7 @@ export type DroneState = {
   spin: number;
   cable: number;
   carrying: boolean;
+  labeled?: boolean;
   light: boolean;
   visible: boolean;
 };
@@ -31,8 +32,6 @@ const ROTOR_PHASE = [0, 0.7, 1.9, 2.6];
 
 /** Cable length needed for a hanging package's centre to sit at `packageY` when the drone is at `droneY`. */
 export const cableFor = (droneY: number, packageY: number) => droneY + BODY_BOTTOM - (packageY + PKG / 2);
-/** Drone height at which a package hanging on `cable` has its centre at `packageY`. */
-export const droneYFor = (cable: number, packageY: number) => packageY + PKG / 2 + cable - BODY_BOTTOM;
 
 /** Bank for a drone flying the x-path `keys`: pitch into acceleration, lean into speed, flare when braking. */
 export function bank(t: number, keys: Key[]): number {
@@ -51,6 +50,7 @@ export function Drone({ p, state }: { p: Palette; state: MutableRefObject<DroneS
   const cable = useRef<THREE.Group>(null);
   const hook = useRef<THREE.Group>(null);
   const pkg = useRef<THREE.Group>(null);
+  const pkgLabeled = useRef<THREE.Group>(null);
   const lamp = useRef<THREE.Group>(null);
   const tilt = useRef(0);
   const rotor = useRef(0);
@@ -78,9 +78,10 @@ export function Drone({ p, state }: { p: Palette; state: MutableRefObject<DroneS
       hook.current.visible = len > 0.01;
       hook.current.position.y = BODY_BOTTOM - len;
     }
-    if (pkg.current) {
-      pkg.current.visible = s.carrying;
-      pkg.current.position.y = BODY_BOTTOM - len - PKG / 2;
+    for (const [cargo, labeled] of [[pkg.current, false], [pkgLabeled.current, true]] as const) {
+      if (!cargo) continue;
+      cargo.visible = s.carrying && !!s.labeled === labeled;
+      cargo.position.y = BODY_BOTTOM - len - PKG / 2;
     }
     if (lamp.current) lamp.current.visible = s.light;
   });
@@ -109,6 +110,7 @@ export function Drone({ p, state }: { p: Palette; state: MutableRefObject<DroneS
       </group>
       <Part ref={hook} p={p} geo={box(0.14, 0.06, 0.14)} mat={p.dark} position={[0, BODY_BOTTOM, 0]} />
       <Package ref={pkg} p={p} />
+      <Package ref={pkgLabeled} p={p} label />
     </group>
   );
 }

@@ -48,9 +48,9 @@ export const Part = forwardRef<THREE.Group, PartProps>(function Part(
 
 export const PKG = 0.5;
 
-/** A cardboard-ish box with a band of accent tape. */
-export const Package = forwardRef<THREE.Group, { p: Palette; position?: Vec3; ghost?: boolean }>(function Package(
-  { p, position, ghost },
+/** A cardboard-ish box with a band of accent tape; `label` adds the lit stamp a processed box gets. */
+export const Package = forwardRef<THREE.Group, { p: Palette; position?: Vec3; ghost?: boolean; label?: boolean }>(function Package(
+  { p, position, ghost, label },
   ref
 ) {
   return (
@@ -58,6 +58,7 @@ export const Package = forwardRef<THREE.Group, { p: Palette; position?: Vec3; gh
       <mesh geometry={box(PKG, PKG, PKG)} material={ghost ? p.ghost : p.solid} />
       <lineSegments geometry={edgesOf(box(PKG, PKG, PKG))} material={ghost ? p.ghostEdge : p.edge} />
       <mesh geometry={box(PKG + 0.02, 0.09, PKG + 0.02)} material={ghost ? p.ghostCore : p.core} />
+      {label && <mesh geometry={box(0.2, 0.1, 0.02)} material={p.light} position={[0, 0.14, PKG / 2 + 0.01]} />}
     </group>
   );
 });
