@@ -129,8 +129,22 @@ ul {
 .scene--back {
   z-index: 0;
 }
-.scene--front {
+/* The robots' canvas lives in the document and is moved to the viewport every frame (FollowScroll). */
+#root {
+  position: relative;
+}
+.scene-track {
+  position: absolute;
+  inset: 0;
   z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+.scene--front {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 100vh;
+  will-change: transform;
 }
 .scene canvas {
   display: block;

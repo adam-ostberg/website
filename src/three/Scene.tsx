@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { detectQuality, type Quality } from "../lib/quality";
 import { usePointerTracking } from "../lib/world";
 import { ParticleField } from "./ParticleField";
@@ -90,28 +90,48 @@ export function BackgroundScene({ quality }: { quality: Quality }) {
   );
 }
 
-/** Robot stations on a transparent canvas in front of the page, so they sit on the solid section colours. */
+/**
+ * Robot stations on a transparent canvas in front of the page, so they sit on the solid section colours.
+ * The canvas scrolls with the page (see FollowScroll), so the robots stay glued to their sections.
+ */
 export function ShapesScene({ quality }: { quality: Quality }) {
   const reduced = quality === "reduced";
   const dpr = useBudgetDpr(quality === "high" ? 2 : 1, FRONT_PIXELS);
+  const frame = useRef<HTMLDivElement>(null);
   if (quality === "none") return null;
 
   return (
-    <div className="scene scene--front" aria-hidden="true">
-      <Canvas
-        dpr={dpr}
-        camera={CAMERA}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance", stencil: false }}
-        frameloop={reduced ? "demand" : "always"}>
-        <hemisphereLight args={["#ffffff", "#3a3a3a", 1.6]} />
-        <directionalLight position={[5, 8, 6]} intensity={3.2} />
-        <directionalLight position={[-6, -2, 4]} intensity={1.4} color="#f386a1" />
-        <directionalLight position={[3, 2, -6]} intensity={2.2} color="#9fd0ff" />
-        <Stations frozen={reduced} />
-        {reduced ? <InvalidateOnScroll /> : <PlayWhile active={stationsNearby} />}
-      </Canvas>
+    <div className="scene-track" aria-hidden="true">
+      <div ref={frame} className="scene scene--front">
+        <Canvas
+          dpr={dpr}
+          resize={{ scroll: false }}
+          camera={CAMERA}
+          gl={{ antialias: true, alpha: true, powerPreference: "high-performance", stencil: false }}
+          frameloop={reduced ? "demand" : "always"}>
+          <hemisphereLight args={["#ffffff", "#3a3a3a", 1.6]} />
+          <directionalLight position={[5, 8, 6]} intensity={3.2} />
+          <directionalLight position={[-6, -2, 4]} intensity={1.4} color="#f386a1" />
+          <directionalLight position={[3, 2, -6]} intensity={2.2} color="#9fd0ff" />
+          <FollowScroll frame={frame} />
+          <Stations frozen={reduced} />
+          {reduced ? <InvalidateOnScroll /> : <PlayWhile active={stationsNearby} />}
+        </Canvas>
+      </div>
     </div>
   );
+}
+
+/**
+ * Moves the canvas to cover the viewport at the scroll position this frame is drawn for. A fixed
+ * canvas trails the page by a frame or two, because the browser scrolls the page on its own thread
+ * and the canvas only catches up on the next render; this one scrolls along with the page instead.
+ */
+function FollowScroll({ frame }: { frame: RefObject<HTMLDivElement | null> }) {
+  useFrame(() => {
+    if (frame.current) frame.current.style.transform = `translate3d(0, ${window.scrollY}px, 0)`;
+  }, -10);
+  return null;
 }
 
 /** In reduced-motion mode the loop is on demand, so re-render on scroll/resize only. */
