@@ -78,7 +78,7 @@ export function BackgroundScene({ quality }: { quality: Quality }) {
         gl={{ antialias: !high, powerPreference: "high-performance", alpha: false, stencil: false }}
         frameloop={reduced ? "demand" : "always"}>
         <color attach="background" args={["#0a0a0a"]} />
-        <ParticleField count={high ? 3200 : 1400} interactive={high} frozen={reduced} />
+        <ParticleField count={high ? 2100 : 900} interactive={high} frozen={reduced} />
         {high && (
           <Suspense fallback={null}>
             <Effects />
