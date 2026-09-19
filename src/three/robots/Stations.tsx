@@ -328,6 +328,17 @@ const STATIONS: Record<StationKind, (p: StationProps) => React.JSX.Element> = {
 
 /* ------------------------------------------------------------------ anchoring */
 
+/** A station plays while its anchor's centre is within this many viewport heights of the screen. */
+const NEAR = 0.6;
+const isNear = (r: DOMRect, viewH: number) => {
+  const cy = r.top + r.height / 2;
+  return r.height > 0 && cy > -viewH * NEAR && cy < viewH * (1 + NEAR);
+};
+
+/** Whether any station is close enough to the screen to be playing. */
+export const stationsNearby = () =>
+  Array.from(document.querySelectorAll<HTMLElement>("[data-shape]")).some((el) => isNear(el.getBoundingClientRect(), window.innerHeight));
+
 /**
  * Finds every `[data-shape]` element and plays a station on it. The station is
  * scaled so the anchor is STAGE_H units tall; robots may leave through the viewport edges.
@@ -376,8 +387,7 @@ function AnchoredStation({ el, index, frozen }: { el: HTMLElement; index: number
     const r = el.getBoundingClientRect();
     const cx = r.left + r.width / 2;
     const cy = r.top + r.height / 2;
-    const margin = size.height * 0.6;
-    const visible = r.height > 0 && cy > -margin && cy < size.height + margin;
+    const visible = isNear(r, size.height);
     g.visible = visible;
     if (!visible) {
       started.current = null;

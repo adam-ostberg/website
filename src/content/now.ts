@@ -3,7 +3,7 @@ export const now = [
   {
     label: "studying",
     title: "M.Sc. Computer Science, KTH",
-    text: "AI & Robotics track. 2026 – 2028.",
+    text: "AI & Robotics track. 2026 - 2028.",
   },
   {
     label: "working",

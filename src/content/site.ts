@@ -11,5 +11,5 @@ export const site = {
   cv: "/assets/CV-AdamOstberg.pdf",
   intro:
     "Computer science master's student at KTH, focused on AI. Currently working with training data at a stealth AI startup.",
-  metaRow: ["m.sc. computer science — kth", "ai & robotics"],
+  metaRow: ["m.sc. computer science - kth", "ai & robotics"],
 };

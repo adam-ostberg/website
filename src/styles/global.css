@@ -141,7 +141,8 @@ ul {
 }
 .grain {
   position: fixed;
-  inset: -50%;
+  /* Just enough overscan for the jitter below: at -50% the layer was 4x the screen, huge on 4K. */
+  inset: -15%;
   z-index: 4;
   pointer-events: none;
   opacity: 0.05;
@@ -223,38 +224,48 @@ ul {
 }
 
 /* ---------- buttons ---------- */
+/* Square and pixel-set like the windows: outlined ones invert on hover, the primary one sits on a hard shadow. */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 46px;
-  padding: 0 22px;
-  border: 1px solid var(--s-line-strong, var(--line-strong));
-  border-radius: 999px;
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  height: 44px;
+  padding: 0 18px;
+  border: 2px solid var(--s-fg, var(--fg));
+  font-family: var(--px);
+  -webkit-font-smoothing: none;
+  font-size: 16px;
+  letter-spacing: 0;
+  text-transform: lowercase;
   white-space: nowrap;
-  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+  transition: background 0.15s, color 0.15s, transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
 }
 .btn:hover {
-  border-color: var(--s-fg, var(--fg));
-  transform: translateY(-1px);
+  background: var(--s-fg, var(--fg));
+  color: var(--s-bg, var(--bg));
+}
+.btn:active {
+  transform: translate(1px, 1px);
 }
 .btn--primary {
   background: var(--s-btn-bg, var(--fg));
   color: var(--s-btn-fg, #0a0a0a);
   border-color: var(--s-btn-bg, var(--fg));
+  box-shadow: 4px 4px 0 var(--accent);
 }
 .btn--primary:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #0a0a0a;
+  background: var(--s-btn-bg, var(--fg));
+  color: var(--s-btn-fg, #0a0a0a);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--accent);
+}
+.btn--primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--accent);
 }
 .btn--sm {
-  height: 34px;
-  padding: 0 14px;
-  font-size: 12px;
+  height: 32px;
+  padding: 0 10px;
 }
 
 /* ---------- nav ---------- */
@@ -296,8 +307,8 @@ ul {
   color: var(--fg);
 }
 .nav .btn {
-  --s-line-strong: var(--line-strong);
   --s-fg: var(--fg);
+  --s-bg: var(--bg);
 }
 .nav__toggle {
   display: none;
@@ -658,15 +669,18 @@ ul {
 }
 
 /* ---------- experience ---------- */
-.rows {
-  border-top: 2px solid var(--s-fg);
+.log + .log {
+  margin-top: clamp(40px, 6vw, 72px);
 }
 .row {
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 24px;
-  padding: 26px 0;
+  padding: 26px 24px;
   border-bottom: 1px solid var(--s-line-strong);
+}
+.row:last-child {
+  border-bottom: 0;
 }
 .row__period {
   font-family: var(--px);
@@ -694,13 +708,14 @@ ul {
   font-size: 18px;
   line-height: 1.5;
 }
-.subhead {
-  margin: clamp(56px, 8vw, 96px) 0 18px;
-}
 @media (max-width: 640px) {
   .row {
     grid-template-columns: 1fr;
     gap: 6px;
+    padding: 22px 18px;
+  }
+  .row__period:empty {
+    display: none;
   }
 }
 
