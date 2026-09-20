@@ -118,7 +118,8 @@ export function useDragWindows() {
        * the animating instead, so transitions stay off until the window is home.
        */
       el.style.transition = "none";
-      el.style.zIndex = "5";
+      // One above the resting layer (.win is 5), so the held window clears its neighbours.
+      el.style.zIndex = "6";
       el.style.willChange = "transform";
       el.classList.add("is-dragging");
       // Keeps the drag alive when the pointer leaves the bar. The window listeners below

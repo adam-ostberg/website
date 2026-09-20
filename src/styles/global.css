@@ -116,6 +116,10 @@ ul {
 }
 
 /* ---------- layers ---------- */
+/*
+ * Stacking order, all in #root's context: background canvas 0, the page itself (auto),
+ * the robots' canvas 3, windows 5, nav 10, grain on top at 20.
+ */
 .scene,
 .scene * {
   pointer-events: none !important;
@@ -147,15 +151,20 @@ ul {
 .scene canvas {
   display: block;
 }
+/*
+ * Positioned, but deliberately *not* a stacking context: z-index here would trap every
+ * descendant below the robots' canvas. With z-index auto the page's own content still
+ * paints as one block between the two canvases, while a descendant that asks for a layer
+ * (the nav, a window) sorts against them directly. See the scale above.
+ */
 .page {
   position: relative;
-  z-index: 1;
 }
 .grain {
   position: fixed;
   /* Just enough overscan for the jitter below: at -50% the layer was 4x the screen, huge on 4K. */
   inset: -15%;
-  z-index: 4;
+  z-index: 20;
   pointer-events: none;
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -219,8 +228,9 @@ ul {
 
 /* Window chrome: 2px frame, solid title bar, hard offset shadow. */
 .win {
-  /* Positioned so a dragged window can be lifted above the rest of the page. */
+  /* Above the robots' canvas (3), so a window is never drawn over by the 3D scene. */
   position: relative;
+  z-index: 5;
   border: 2px solid var(--s-fg);
   background: var(--s-card);
   box-shadow: 6px 6px 0 var(--s-fg);
