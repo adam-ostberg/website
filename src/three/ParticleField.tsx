@@ -124,9 +124,11 @@ type Props = {
   count: number;
   interactive: boolean;
   frozen: boolean;
+  /** Overall opacity. The hero keeps this low so the field reads as texture behind the robots. */
+  strength: number;
 };
 
-export function ParticleField({ count, interactive, frozen }: Props) {
+export function ParticleField({ count, interactive, frozen, strength }: Props) {
   const data = useMemo(() => buildField(count), [count]);
 
   const { pointsGeo, linesGeo } = useMemo(() => {
@@ -223,7 +225,7 @@ export function ParticleField({ count, interactive, frozen }: Props) {
     uniforms.uScaleX.value = sx;
     uniforms.uMouseActive.value = s.active * (1 - s.scroll);
     uniforms.uPixelRatio.value = state.gl.getPixelRatio();
-    uniforms.uOpacity.value = 1 - s.scroll * 0.7;
+    uniforms.uOpacity.value = strength * (1 - s.scroll * 0.7);
 
     const g = group.current;
     if (g) {

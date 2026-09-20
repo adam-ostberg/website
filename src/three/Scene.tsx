@@ -1,18 +1,15 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { detectQuality, type Quality } from "../lib/quality";
 import { usePointerTracking } from "../lib/world";
 import { ParticleField } from "./ParticleField";
 import { Stations, stationsNearby } from "./robots/Stations";
 
-// Bloom pulls in the postprocessing library, so it loads after the first frame.
-const Effects = lazy(() => import("./Effects").then((m) => ({ default: m.Effects })));
-
 const CAMERA = { position: [0, 0, 10] as [number, number, number], fov: 45, near: 0.1, far: 60 };
 
 /*
  * Most pixels a canvas may render; above that the pixel ratio drops, so a 4K screen costs about
- * as much as 1080p (background, softened by bloom anyway) or 1440p (the crisper robots).
+ * as much as 1080p (the faint background) or 1440p (the crisper robots).
  */
 const BACK_PIXELS = 1920 * 1080;
 const FRONT_PIXELS = 2560 * 1440;
@@ -62,7 +59,11 @@ export function useQuality(): Quality {
   return useMemo(detectQuality, []);
 }
 
-/** Particle field on a canvas fixed behind the page. Visible wherever a section is dark. */
+/**
+ * Particle field on a canvas fixed behind the page, visible wherever a section is dark.
+ * It is deliberately faint: the hero's subject is the robot line in front of it, and the
+ * field is only here to keep the dark sections from going flat.
+ */
 export function BackgroundScene({ quality }: { quality: Quality }) {
   const high = quality === "high";
   const reduced = quality === "reduced";
@@ -78,12 +79,7 @@ export function BackgroundScene({ quality }: { quality: Quality }) {
         gl={{ antialias: !high, powerPreference: "high-performance", alpha: false, stencil: false }}
         frameloop={reduced ? "demand" : "always"}>
         <color attach="background" args={["#0a0a0a"]} />
-        <ParticleField count={high ? 2100 : 900} interactive={high} frozen={reduced} />
-        {high && (
-          <Suspense fallback={null}>
-            <Effects />
-          </Suspense>
-        )}
+        <ParticleField count={high ? 750 : 380} interactive={high} frozen={reduced} strength={0.42} />
         {reduced ? <InvalidateOnScroll /> : <PlayWhile active={backgroundShowing} />}
       </Canvas>
     </div>
@@ -114,7 +110,7 @@ export function ShapesScene({ quality }: { quality: Quality }) {
           <directionalLight position={[-6, -2, 4]} intensity={1.4} color="#f386a1" />
           <directionalLight position={[3, 2, -6]} intensity={2.2} color="#9fd0ff" />
           <FollowScroll frame={frame} />
-          <Stations frozen={reduced} />
+          <Stations frozen={reduced} detail={quality === "high"} />
           {reduced ? <InvalidateOnScroll /> : <PlayWhile active={stationsNearby} />}
         </Canvas>
       </div>

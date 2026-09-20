@@ -48,6 +48,20 @@ export function Hero() {
           ))}
         </div>
       </div>
+      {/*
+        The production line. Sized and positioned by CSS; the 3D scene finds it by
+        [data-shape] and plays the station inside it. Light ink and lighter body
+        greys, because this one sits on the dark ground rather than a pastel one.
+      */}
+      <div
+        className="hero__stage"
+        data-shape="hero"
+        data-ink="#e8e8e8"
+        data-accent="#f386a1"
+        data-solid="#6e6e74"
+        data-dark="#3a3a40"
+        aria-hidden="true"
+      />
       <div className="hero__scroll label" aria-hidden="true">
         scroll ↓
       </div>

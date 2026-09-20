@@ -47,7 +47,7 @@ function Card({ p, i }: { p: Project; i: number }) {
 
 export function Projects() {
   return (
-    <section id="projects" className="section section--light section--cream">
+    <section id="projects" className="section section--light">
       <div className="container">
         <SectionHead title="Things I've built." lede="From idea to prototype to something people can use." shape="pickup" />
         <div className="projects">

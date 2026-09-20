@@ -24,7 +24,7 @@ function ToolStrip() {
 
 export function Now() {
   return (
-    <section id="now" className="section section--light section--sky">
+    <section id="now" className="section section--light">
       <div className="container">
         <SectionHead title="Studying AI, working with data, looking for the next step." shape="arm" />
         <div className="win" data-reveal>

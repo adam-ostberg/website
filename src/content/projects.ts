@@ -30,10 +30,10 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "Matjakt",
-    kind: "Large scale web scraping · Web app",
+    kind: "Web app · Bachelor’s project",
     year: "2026",
     description:
-      "For my bachelors project me and a group of friends created a website where users can compare prices across major grocery stores across Sweden. They can create a shopping list and through smart algorithms our website will create a list of what to buy from where according the price and distance to user. All data was sourced by us by building automated web scrapers that retrived all price data for all products across all relevant stores with online shops, resulting in multiple million data points.",
+      "Enter a shopping list and it works out what to buy where, balancing price against how far you’d travel. Custom scrapers pulled several million price points from every major Swedish grocery chain to make the comparison possible.",
     tags: ["Web scraping", "SQL", "TypeScript", "React"],
     image: "/assets/matjakt.png",
     imageAlt: "The matjakt website",

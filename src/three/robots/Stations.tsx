@@ -1,69 +1,31 @@
-import { useEffect, useRef, useState, type MutableRefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { usePalette, type Palette } from "../palette";
+import { usePalette } from "../palette";
 import { Arm, mix, reach, type ArmState, type Joints } from "./Arm";
-import { Rover, ROVER_PAD_TOP, type RoverState } from "./Rover";
+import { Rover, type RoverState } from "./Rover";
 import { Drone, bank, cableFor, type DroneState } from "./Drone";
+import { HeroLine } from "./HeroLine";
 import { Package, Part, PKG, box, cyl } from "./parts";
 import { kf, between, blink, easeIn, easeOut, hover, motion, span, PERIOD, type Key } from "./timeline";
+import {
+  Belt,
+  BELT_TOP,
+  FLOOR,
+  FROZEN_T,
+  ORDER,
+  PKG_ON_BELT,
+  PKG_ON_ROVER,
+  roll,
+  SPIN,
+  STAGE_H,
+  type Stage,
+  type StationProps,
+} from "./stage";
 
-export type StationKind = "arm" | "pickup" | "relay" | "stack";
-
-/**
- * The stage a station plays on, in station-local units. The anchor element is
- * always STAGE_H units tall; `left/right/top/bottom` are the viewport edges so
- * robots can enter and leave through them.
- */
-export type Stage = { w: number; left: number; right: number; top: number; bottom: number; floor: number };
-export const STAGE_H = 3;
-const FLOOR = -STAGE_H / 2;
-/** Fixed moment shown when the user prefers reduced motion. */
-const FROZEN_T = 5.2;
-/** Cruising rotor speed, rad/s. */
-const SPIN = 34;
-const PKG_ON_ROVER = FLOOR + ROVER_PAD_TOP + PKG / 2;
-
-/*
- * Frame order: scroll boost, then each station's clock, then its choreography, and
- * finally the robots (default priority 0) apply the state written in that same frame.
- */
-const ORDER = { boost: -3, clock: -2, station: -1 };
-
-type StationProps = { p: Palette; stage: MutableRefObject<Stage>; time: MutableRefObject<number> };
+export type StationKind = "hero" | "arm" | "pickup" | "relay" | "stack";
 
 /* ------------------------------------------------------------------ stations */
-
-/* Conveyor belts: a frame with its top at BELT_TOP and rollers along the front edge. */
-const BELT_TOP = FLOOR + 0.3;
-const PKG_ON_BELT = BELT_TOP + PKG / 2;
-const ROLLER_R = 0.07;
-
-type BeltProps = { p: Palette; x: number; length: number; rollers: number[]; rollerRefs: MutableRefObject<(THREE.Group | null)[]> };
-
-function Belt({ p, x, length, rollers, rollerRefs }: BeltProps) {
-  const leg = length / 2 - 0.1;
-  return (
-    <>
-      <Part p={p} geo={box(length, 0.1, 0.7)} mat={p.dark} position={[x, BELT_TOP - 0.05, 0]} />
-      <Part p={p} geo={box(length, 0.06, 0.06)} position={[x, BELT_TOP - 0.13, 0.36]} />
-      <Part p={p} geo={box(0.08, 0.2, 0.08)} mat={p.dark} position={[x - leg, FLOOR + 0.1, 0.3]} />
-      <Part p={p} geo={box(0.08, 0.2, 0.08)} mat={p.dark} position={[x + leg, FLOOR + 0.1, 0.3]} />
-      {rollers.map((rx, i) => (
-        <group key={i} ref={(el) => (rollerRefs.current[i] = el)} position={[rx, BELT_TOP + 0.03, 0.42]}>
-          <Part p={p} geo={cyl(ROLLER_R, 0.1, 8)} mat={p.dark} rotation={[Math.PI / 2, 0, 0]} />
-        </group>
-      ))}
-    </>
-  );
-}
-
-/** Turns a belt's rollers by how far its package moved, ignoring the jump back when the loop wraps. */
-function roll(belt: { x: number; angle: number }, x: number, rollers: (THREE.Group | null)[]) {
-  belt.angle += Math.max(x - belt.x, 0) / ROLLER_R;
-  belt.x = x;
-  for (const g of rollers) if (g) g.rotation.z = -belt.angle;
-}
 
 /* Arm station layout. Arm targets are the held package's centre, relative to the arm base on the floor. */
 const ROVER_X = 1.4;
@@ -320,6 +282,7 @@ function StackStation({ p, stage, time }: StationProps) {
 }
 
 const STATIONS: Record<StationKind, (p: StationProps) => React.JSX.Element> = {
+  hero: HeroLine,
   arm: ArmStation,
   pickup: PickupStation,
   relay: RelayStation,
@@ -343,7 +306,7 @@ export const stationsNearby = () =>
  * Finds every `[data-shape]` element and plays a station on it. The station is
  * scaled so the anchor is STAGE_H units tall; robots may leave through the viewport edges.
  */
-export function Stations({ frozen }: { frozen: boolean }) {
+export function Stations({ frozen, detail }: { frozen: boolean; detail: boolean }) {
   const [anchors, setAnchors] = useState<HTMLElement[]>([]);
   useEffect(() => {
     const collect = () => setAnchors(Array.from(document.querySelectorAll<HTMLElement>("[data-shape]")));
@@ -366,17 +329,22 @@ export function Stations({ frozen }: { frozen: boolean }) {
   return (
     <>
       {anchors.map((el, i) => (
-        <AnchoredStation key={i} el={el} index={i} frozen={frozen} />
+        <AnchoredStation key={i} el={el} index={i} frozen={frozen} detail={detail} />
       ))}
     </>
   );
 }
 
-function AnchoredStation({ el, index, frozen }: { el: HTMLElement; index: number; frozen: boolean }) {
+function AnchoredStation({ el, index, frozen, detail }: { el: HTMLElement; index: number; frozen: boolean; detail: boolean }) {
   const group = useRef<THREE.Group>(null);
   const { viewport, size } = useThree();
   const kind = (el.dataset.shape as StationKind) in STATIONS ? (el.dataset.shape as StationKind) : "arm";
-  const palette = usePalette(el.dataset.ink || "#1e1e1e", el.dataset.accent || "#d45bb6");
+  const palette = usePalette(
+    el.dataset.ink || "#1e1e1e",
+    el.dataset.accent || "#d45bb6",
+    el.dataset.solid,
+    el.dataset.dark
+  );
   const stage = useRef<Stage>({ w: 4, left: -3, right: 3, top: 2, bottom: -2, floor: FLOOR });
   const time = useRef(FROZEN_T);
   const started = useRef<number | null>(null);
@@ -415,7 +383,7 @@ function AnchoredStation({ el, index, frozen }: { el: HTMLElement; index: number
   const Station = STATIONS[kind];
   return (
     <group ref={group} visible={false}>
-      <Station p={palette} stage={stage} time={time} />
+      <Station p={palette} stage={stage} time={time} detail={detail} />
     </group>
   );
 }

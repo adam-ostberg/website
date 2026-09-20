@@ -5,7 +5,7 @@ import { delay } from "./util";
 
 export function About() {
   return (
-    <section id="about" className="section section--light section--lavender">
+    <section id="about" className="section section--light">
       <div className="container">
         <SectionHead title="Beyond the code." shape="stack" />
         <div className="about">
