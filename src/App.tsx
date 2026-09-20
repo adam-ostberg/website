@@ -8,10 +8,12 @@ import { About } from "./components/About";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { useReveal } from "./lib/useReveal";
+import { useDragWindows } from "./lib/useDragWindows";
 
 export default function App() {
   const quality = useQuality();
   useReveal();
+  useDragWindows();
 
   return (
     <>

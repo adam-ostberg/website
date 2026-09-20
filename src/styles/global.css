@@ -219,6 +219,8 @@ ul {
 
 /* Window chrome: 2px frame, solid title bar, hard offset shadow. */
 .win {
+  /* Positioned so a dragged window can be lifted above the rest of the page. */
+  position: relative;
   border: 2px solid var(--s-fg);
   background: var(--s-card);
   box-shadow: 6px 6px 0 var(--s-fg);
@@ -863,6 +865,32 @@ ul {
   justify-content: space-between;
   gap: 12px 24px;
   flex-wrap: wrap;
+}
+
+/* ---------- dragging ---------- */
+/*
+ * Windows are dragged by the title bar and spring home on release (useDragWindows).
+ * The media query has to mirror the hook's: pointer-driven, and wide enough that there
+ * is somewhere to drag to. Sits after .project so the held shadow wins over the hover one.
+ */
+@media (hover: hover) and (pointer: fine) and (min-width: 821px) {
+  .win__bar {
+    cursor: grab;
+    user-select: none;
+  }
+  .win.is-dragging .win__bar {
+    cursor: grabbing;
+  }
+  /* Held windows throw a longer shadow, as if lifted off the page. */
+  .win.is-dragging {
+    box-shadow: 12px 12px 0 var(--s-fg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .win__bar {
+      cursor: auto;
+      user-select: auto;
+    }
+  }
 }
 
 /* ---------- reveal ---------- */
