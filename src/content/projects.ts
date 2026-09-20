@@ -29,15 +29,15 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Report Kick",
-    kind: "Applied AI · Web app",
-    year: "2025",
+    title: "Matjakt",
+    kind: "Large scale web scraping · Web app",
+    year: "2026",
     description:
-      "Upload an annual report, get the key financial metrics extracted automatically. Built after watching my girlfriend dig through reports by hand for the same numbers.",
-    tags: ["Applied AI", "TypeScript", "Next.js", "React"],
-    image: "/assets/report-kick.jpg",
-    imageAlt: "Report Kick showing extracted financial indicators from an annual report",
-    link: "https://report.adamostberg.com/",
+      "For my bachelors project me and a group of friends created a website where users can compare prices across major grocery stores across Sweden. They can create a shopping list and through smart algorithms our website will create a list of what to buy from where according the price and distance to user. All data was sourced by us by building automated web scrapers that retrived all price data for all products across all relevant stores with online shops, resulting in multiple million data points.",
+    tags: ["Web scraping", "SQL", "TypeScript", "React"],
+    image: "/assets/matjakt.png",
+    imageAlt: "The matjakt website",
+    link: "https://matjakt.org/",
     featured: true,
   },
   {

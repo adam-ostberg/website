@@ -7,7 +7,7 @@ export function Footer() {
         <span>
           © {new Date().getFullYear()} {site.name}
         </span>
-        <span>built with react, three.js and a lot of coffee</span>
+        <span>github</span>
         <span>{site.location.toLowerCase()}</span>
       </div>
     </footer>
