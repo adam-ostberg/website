@@ -238,6 +238,7 @@ ul {
 /* ---------- buttons ---------- */
 /* Square and pixel-set like the windows: outlined ones invert on hover, the primary one sits on a hard shadow. */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -250,7 +251,23 @@ ul {
   letter-spacing: 0;
   text-transform: lowercase;
   white-space: nowrap;
-  transition: background 0.15s, color 0.15s, transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
+  /*
+   * Only motion eases. The pixel face is set with font-smoothing off, so tweening
+   * its colour re-rasterises every glyph each frame against hard thresholds, which
+   * reads as the text shimmering. The inversion snaps instead, which suits it anyway.
+   */
+  transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+/*
+ * Hover lifts the button 2px up and left. Without this pad that slides the element
+ * out from under a pointer resting near the bottom or right edge: hover drops, the
+ * button falls back under the pointer, hover fires again, and it oscillates. The pad
+ * keeps the hit area over the resting box through both the lift and the press.
+ */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
 }
 .btn:hover {
   background: var(--s-fg, var(--fg));
