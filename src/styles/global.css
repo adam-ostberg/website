@@ -1,6 +1,6 @@
 :root {
-  --bg: #0a0a0a;
-  --bg-elev: #111111;
+  --bg: #0c0a08;
+  --bg-elev: #151210;
   --fg: #e8e8e8;
   --fg-2: #a3a3a3;
   --line: rgba(255, 255, 255, 0.1);
@@ -11,7 +11,7 @@
   --pastel: #efe8dc;
   --sans: "Host Grotesk", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --px: "DotGothic16", ui-monospace, monospace;
-  --max: 1200px;
+  --max: clamp(1200px, 72vw, 1700px);
   --pad: clamp(20px, 5vw, 72px);
   --nav-h: 64px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -29,7 +29,7 @@
   --s-card-hover: var(--bg-elev);
   --s-accent: var(--accent);
   --s-btn-bg: var(--fg);
-  --s-btn-fg: #0a0a0a;
+  --s-btn-fg: var(--bg);
 }
 .section--light {
   /* One ground for every light section. Warm, so it sits with the pink accent
@@ -72,7 +72,7 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: #0a0a0a;
+  color: var(--bg);
 }
 :focus-visible {
   outline: 2px solid var(--s-accent, var(--accent));
@@ -261,13 +261,13 @@ ul {
 }
 .btn--primary {
   background: var(--s-btn-bg, var(--fg));
-  color: var(--s-btn-fg, #0a0a0a);
+  color: var(--s-btn-fg, var(--bg));
   border-color: var(--s-btn-bg, var(--fg));
   box-shadow: 4px 4px 0 var(--accent);
 }
 .btn--primary:hover {
   background: var(--s-btn-bg, var(--fg));
-  color: var(--s-btn-fg, #0a0a0a);
+  color: var(--s-btn-fg, var(--bg));
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0 var(--accent);
 }
@@ -357,7 +357,7 @@ ul {
     right: 0;
     padding: 20px var(--pad) 28px;
     gap: 18px;
-    background: rgba(10, 10, 10, 0.92);
+    background: rgba(12, 10, 8, 0.92);
     border-bottom: 1px solid var(--line);
   }
   .nav.is-open .nav__links a:not(.btn) {
@@ -368,7 +368,7 @@ ul {
 /* ---------- hero ---------- */
 .hero {
   /* Height of the floor strip the production line plays on, reserved as bottom padding. */
-  --stage-h: clamp(240px, 32vh, 330px);
+  --stage-h: clamp(240px, 32vh, 430px);
   min-height: 100svh;
   display: flex;
   align-items: flex-end;
@@ -393,7 +393,7 @@ ul {
   pointer-events: none;
 }
 .hero h1 {
-  font-size: clamp(3.4rem, 10.5vw, 9rem);
+  font-size: clamp(3.4rem, 10.5vw, 13rem);
   line-height: 0.9;
   letter-spacing: -0.045em;
   margin: 0;
@@ -407,6 +407,8 @@ ul {
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
   gap: 40px;
   align-items: end;
+  /* Capped independently of the container: past this the buttons drift too far from the intro. */
+  max-width: 1180px;
 }
 .hero__intro {
   font-size: clamp(1.15rem, 1.8vw, 1.45rem);
@@ -649,6 +651,7 @@ ul {
 .project p {
   color: var(--s-fg);
   margin: 0;
+  max-width: 62ch;
   font-size: 18px;
   line-height: 1.5;
 }

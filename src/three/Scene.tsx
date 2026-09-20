@@ -78,7 +78,8 @@ export function BackgroundScene({ quality }: { quality: Quality }) {
         camera={CAMERA}
         gl={{ antialias: !high, powerPreference: "high-performance", alpha: false, stencil: false }}
         frameloop={reduced ? "demand" : "always"}>
-        <color attach="background" args={["#0a0a0a"]} />
+        {/* Must match --bg: this canvas sits directly behind the dark sections. */}
+        <color attach="background" args={["#0c0a08"]} />
         <ParticleField count={high ? 750 : 380} interactive={high} frozen={reduced} strength={0.42} />
         {reduced ? <InvalidateOnScroll /> : <PlayWhile active={backgroundShowing} />}
       </Canvas>

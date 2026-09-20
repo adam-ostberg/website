@@ -82,7 +82,7 @@ function armPose(t: number): Joints {
 
 /** Shelving well behind the line. Soft edges and no accent, so it reads as depth rather than detail. */
 function Racking({ p }: { p: StationProps["p"] }) {
-  const bays = [-5.4, -2.6, 0.5, 3.4, 6.0];
+  const bays = [-8.2, -5.4, -2.6, 0.5, 3.4, 6.0, 8.8];
   return (
     <group position={[0, 0, -2.0]}>
       {bays.map((x) => (
