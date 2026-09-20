@@ -3,48 +3,124 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { Palette } from "../palette";
 import { Part, Wheel, box, cyl } from "./parts";
-import { blink, between, motion, PERIOD } from "./timeline";
+import { kf, blink, easeIn, motion, PERIOD } from "./timeline";
 import { ORDER, type StationProps } from "./stage";
 
 /*
- * Two combat robots circling on a mat, seen from above.
+ * Two combat robots circling and ramming each other, seen from above.
  *
  * The page camera never moves, so the plan view comes from rotating the station's own
- * ground plane a quarter turn to face it: the arena is built flat in xz around the
- * origin, and the wrapper at the bottom tips it up. After that rotation +x is screen
- * right, +z is screen down, and a car's yaw about y is its rotation on screen, which is
- * what makes driving read at all. Nothing here uses FLOOR: there is no floor to stand on
- * in a plan view, only a mat to drive on.
+ * ground plane a quarter turn to face it. After that +x is screen right, +z is screen
+ * down, and a car's yaw about y is its rotation on screen, which is what makes driving
+ * read. There is no floor: the cars are the whole station.
+ *
+ * The pair is described by one line through the centre, at angle PHI, with a car at each
+ * end of it and GAP between them. PHI turns steadily, which walks both cars around a
+ * circle; GAP slams shut and springs open, which is the fight. Two things fall out of
+ * describing it this way. The cars are always exactly GAP apart, so clamping GAP at two
+ * nose lengths makes it impossible for them to pass through one another. And they always
+ * face along the line, which means they charge head on rather than swiping past, because
+ * a real collision needs them travelling into each other rather than alongside.
  */
 
-/** Half the chassis plus the blade: two cars touch, nose to nose, at twice this. */
+/** Half a car, nose to centre. Two of these is contact. */
 const NOSE = 0.52;
 const WHEEL_R = 0.13;
 
-/** The two moments they line up. Everything else follows from the oval. */
-const BUMP = [3, 9];
+/** Turns of the whole pair per loop. Three puts the cars at about 5 units a second. */
+const TURNS = 3;
+/** Seconds between hits. PERIOD must divide by this, or the loop won't close. */
+const CLASH_T = 3;
+const CLASH_0 = 1.5;
 
-/** `h` is null until the first frame has something to measure. */
-type CarState = { x: number; z: number; h: number | null; flash: boolean };
+/**
+ * How far apart they circle, by angle: wider when the pair lies across the screen than
+ * when it stands up it, so the fight uses the width of the section head without ever
+ * reaching past the top and bottom of it.
+ */
+const spread = (phi: number) => 2.0 + 1.6 * Math.cos(phi) ** 2;
+
+/**
+ * 1 circling, 0 at contact. Slams shut over the last half second, accelerating the whole
+ * way in and closing at nearly 7 units a second, then springs back out and settles. The step in speed either side of 0
+ * is the impact: without it they just drift past each other, which is what made the last
+ * version look like nothing was happening.
+ */
+const APART: Parameters<typeof kf>[1] = [
+  [0, 0], [0.16, 0.5], [0.4, 0.38], [0.95, 1], [2.45, 1], [CLASH_T, 0, easeIn],
+];
+
+const cycle = (t: number) => (((t - CLASH_0) % CLASH_T) + CLASH_T) % CLASH_T;
+const phiOf = (t: number) => (2 * Math.PI * TURNS * t) / PERIOD;
+
+type Spot = { x: number; z: number };
+
+/** Distance between the two cars: never less than a nose to a nose. */
+function gapOf(t: number): number {
+  const phi = phiOf(t);
+  return 2 * NOSE + (spread(phi) - 2 * NOSE) * kf(cycle(t), APART);
+}
+
+function ploughAt(t: number): Spot {
+  const phi = phiOf(t);
+  const r = gapOf(t) / 2;
+  return { x: -r * Math.cos(phi), z: -r * Math.sin(phi) };
+}
+function spinAt(t: number): Spot {
+  const phi = phiOf(t);
+  const r = gapOf(t) / 2;
+  return { x: r * Math.cos(phi), z: r * Math.sin(phi) };
+}
+
+/** Fastest a car can turn, rad/s. */
+const SLEW = 9;
+
+/*
+ * With the mat gone there is nothing else holding the anchor, so the fight is scaled up to
+ * carry it on its own. It reaches a little past the top and bottom of the anchor at this
+ * size, which is only empty ground above and the essay window below, and the window is on
+ * a layer above the canvas anyway.
+ */
+const SCALE = 1.2;
+
+/**
+ * Where a car is pointing. The direction of travel reverses in one frame when a hit throws
+ * it backwards, so the yaw chases that direction at a limited rate instead of being set to
+ * it. Below the limit this is exact; at a hit it turns the jump into a car being spun round
+ * by the blow, which is the bit worth watching.
+ */
+function steer(prev: number, at: (t: number) => Spot, t: number, dt: number): number {
+  const a = at(t - 0.04);
+  const b = at(t + 0.04);
+  const vx = b.x - a.x;
+  const vz = b.z - a.z;
+  if (Math.hypot(vx, vz) < 1e-5) return prev;
+  let want = Math.atan2(-vz, vx);
+  while (want - prev > Math.PI) want -= 2 * Math.PI;
+  while (prev - want > Math.PI) want += 2 * Math.PI;
+  const step = SLEW * dt;
+  return Math.abs(want - prev) <= step ? want : prev + Math.sign(want - prev) * step;
+}
+
+type CarState = { x: number; z: number; h: number; flash: boolean };
 
 function Car({ p, state, children }: { p: Palette; state: MutableRefObject<CarState>; children: ReactNode }) {
   const root = useRef<THREE.Group>(null);
   const wheels = useRef<(THREE.Group | null)[]>([]);
   const lamp = useRef<THREE.Group>(null);
-  const travelled = useRef({ x: 0, z: 0, angle: 0 });
+  const odo = useRef({ x: 0, z: 0, angle: 0 });
 
   useFrame(() => {
     const s = state.current;
     if (root.current) {
       root.current.position.set(s.x, 0, s.z);
-      root.current.rotation.y = s.h ?? 0;
+      root.current.rotation.y = s.h;
     }
-    // Wheels turn by distance covered, whichever way the car happens to be pointing.
-    const d = travelled.current;
-    const step = Math.hypot(s.x - d.x, s.z - d.z);
+    // Wheels turn by ground covered, whichever way the car is pointing.
+    const d = odo.current;
+    d.angle += Math.hypot(s.x - d.x, s.z - d.z) / WHEEL_R;
     d.x = s.x;
     d.z = s.z;
-    d.angle += step / WHEEL_R;
     for (const w of wheels.current) if (w) w.rotation.z = -d.angle;
     if (lamp.current) lamp.current.visible = s.flash;
   });
@@ -63,7 +139,7 @@ function Car({ p, state, children }: { p: Palette; state: MutableRefObject<CarSt
           r={WHEEL_R}
         />
       ))}
-      <Part ref={lamp} p={p} geo={box(0.1, 0.05, 0.1)} mat={p.light} edge={false} position={[-0.36, 0.26, 0]} />
+      <Part ref={lamp} p={p} geo={box(0.12, 0.05, 0.12)} mat={p.light} edge={false} position={[-0.36, 0.26, 0]} />
     </group>
   );
 }
@@ -101,138 +177,43 @@ function SpinnerCar({ p, state, bar }: { p: Palette; state: MutableRefObject<Car
   );
 }
 
-/* --------------------------------------------------------------- the routes */
-
-/*
- * Both cars run the same oval, in opposite directions, at a constant rate. Hand-written
- * keyframes were the wrong tool: a closed lap has to leave its first point travelling the
- * way it arrives at its last, and every table that got the bumps right put a reversal
- * somewhere, which snaps the car through half a turn in a frame. An angle is periodic on
- * its own, so the lap closes for free and the heading is always along the track.
- *
- * Counter-rotating at the same rate, they line up at exactly two angles per lap. Those are
- * the clashes. To keep them from ending up in the same spot, each takes a different line
- * into the bend near a clash -- one inside, one outside -- which separates them by two
- * nose lengths at the closest point: touching, not overlapping.
- */
-const RX = 1.95;
-const RZ = 1.0;
-const RATE = (2 * Math.PI) / PERIOD;
-/*
- * Fraction of the radius each car gives up (or takes) on the way into a clash. Derived,
- * not chosen: the two lines are 2 * SPLIT * RX apart at the ends of the oval, and that
- * wants to be exactly two nose lengths so the cars touch without passing through.
- */
-const SPLIT = NOSE / RX;
-/** Phases chosen so the two line up at the ends of the oval, where there is room to meet. */
-const PHASE_A = -Math.PI / 2;
-const PHASE_B = Math.PI / 2;
-
-/*
- * 1 at a clash, easing to 0 two seconds either side. Narrower and the lines rejoin while
- * the cars are still alongside each other, which puts them through one another just after
- * the hit; wider and the split stops reading as a move into the bend.
- */
-const lobe = (t: number, b: number) => Math.max(0, 1 - ((t - b) / 2) ** 2);
-const split = (t: number) => Math.max(lobe(t, BUMP[0]), lobe(t, BUMP[1]));
-
-type Spot = { x: number; z: number };
-
-/** Where a car is at time t. `dir` is which way round, `side` is inside (-1) or outside (+1). */
-function place(t: number, dir: 1 | -1, phase: number, side: 1 | -1): Spot {
-  const th = dir * RATE * t + phase;
-  const k = 1 + side * SPLIT * split(t);
-  return { x: RX * k * Math.cos(th), z: RZ * k * Math.sin(th) };
-}
-
-const ploughAt = (t: number) => place(t, 1, PHASE_A, -1);
-const spinAt = (t: number) => place(t, -1, PHASE_B, 1);
-
-/**
- * Yaw from the direction of travel, sampled either side of now. Kept near `prev` so a car
- * coming round the end of the oval keeps turning instead of snapping back the long way.
- */
-function headingOf(t: number, at: (t: number) => Spot, prev: number | null): number {
-  const a = at(t - 0.07);
-  const b = at(t + 0.07);
-  const vx = b.x - a.x;
-  const vz = b.z - a.z;
-  if (Math.hypot(vx, vz) < 1e-5) return prev ?? 0;
-  let h = Math.atan2(-vz, vx);
-  if (prev === null) return h; // nothing to unwrap against yet
-  while (h - prev > Math.PI) h -= 2 * Math.PI;
-  while (prev - h > Math.PI) h += 2 * Math.PI;
-  return h;
-}
-
-/** Recoil at a bump: a decaying shake that starts by pushing the car back off its nose. */
-function shove(t: number): number {
-  for (const b of BUMP) {
-    if (t >= b && t < b + 0.26) {
-      const f = (t - b) / 0.26;
-      return -Math.sin(f * Math.PI * 3) * 0.06 * (1 - f);
-    }
-  }
-  return 0;
-}
-
-const hitting = (t: number) => BUMP.some((b) => between(t, b, b + 0.3));
-
 export function SparStation({ p, time }: StationProps) {
-  const plough = useRef<CarState>({ x: 0, z: -RZ, h: null, flash: false });
-  const spinner = useRef<CarState>({ x: 0, z: RZ, h: null, flash: false });
+  const plough = useRef<CarState>({ x: -1, z: 0, h: 0, flash: false });
+  const spinner = useRef<CarState>({ x: 1, z: 0, h: Math.PI, flash: false });
   const bar = useRef<THREE.Group | null>(null);
-  const lamp = useRef<THREE.Group>(null);
-  const spin = useRef({ angle: 0, t: 0 });
+  const clock = useRef({ t: 0, spin: 0 });
 
   useFrame(() => {
     const t = time.current;
-
-    const kick = shove(t);
+    const c = clock.current;
+    // The station clock wraps at PERIOD; a wrap is not elapsed time.
+    const dt = t > c.t ? Math.min(t - c.t, 0.05) : 1 / 60;
+    c.t = t;
 
     const a = plough.current;
-    a.h = headingOf(t, ploughAt, a.h);
     const aAt = ploughAt(t);
-    a.x = aAt.x + Math.cos(a.h) * kick;
-    a.z = aAt.z - Math.sin(a.h) * kick;
+    a.x = aAt.x;
+    a.z = aAt.z;
+    a.h = steer(a.h, ploughAt, t, dt);
 
     const b = spinner.current;
-    b.h = headingOf(t, spinAt, b.h);
     const bAt = spinAt(t);
-    b.x = bAt.x + Math.cos(b.h) * kick;
-    b.z = bAt.z - Math.sin(b.h) * kick;
+    b.x = bAt.x;
+    b.z = bAt.z;
+    b.h = steer(b.h, spinAt, t, dt);
 
-    const hit = hitting(t);
-    a.flash = hit ? blink(t, 12) : false;
-    b.flash = hit ? blink(t, 12) : false;
+    // Lamps strobe for a moment after each hit.
+    const hit = cycle(t) < 0.34;
+    a.flash = hit && blink(t, 16);
+    b.flash = hit && blink(t, 16);
 
-    // The bar spins up on the way in and never really stops.
-    const rate = 22 + motion.boost * 20;
-    const dt = t - spin.current.t;
-    spin.current.t = t;
-    if (dt > 0) spin.current.angle += rate * dt;
-    if (bar.current) bar.current.rotation.y = spin.current.angle;
-
-    if (lamp.current) lamp.current.visible = hit ? true : blink(t, 0.5);
+    c.spin += (46 + motion.boost * 30) * dt;
+    if (bar.current) bar.current.rotation.y = c.spin;
   }, ORDER.station);
 
+  /* Built flat in xz above, tipped up to face the camera here. */
   return (
-    /* Flat in xz above, tipped up to face the camera here. */
-    <group rotation={[Math.PI / 2, 0, 0]}>
-      <Part p={p} geo={box(6.0, 0.04, 2.72)} mat={p.dark} position={[0, -0.02, 0]} />
-      {/* Boards around the edge: from above they read as the outline of the arena. */}
-      {([1, -1] as const).map((s) => (
-        <Part key={`h${s}`} p={p} geo={box(6.0, 0.16, 0.08)} position={[0, 0.06, s * 1.36]} />
-      ))}
-      {([1, -1] as const).map((s) => (
-        <Part key={`v${s}`} p={p} geo={box(0.08, 0.16, 2.72)} position={[s * 2.96, 0.06, 0]} />
-      ))}
-      {/* Centre line and the corner squares, so the mat reads as a floor and not a slab. */}
-      <Part p={p} geo={box(0.04, 0.01, 2.2)} mat={p.core} edge={false} position={[0, 0.01, 0]} />
-      {([[-2.3, 0.95], [2.3, 0.95], [-2.3, -0.95], [2.3, -0.95]] as const).map(([x, z]) => (
-        <Part key={`${x}:${z}`} p={p} geo={box(0.22, 0.01, 0.22)} mat={p.core} edge={false} position={[x, 0.01, z]} />
-      ))}
-      <Part ref={lamp} p={p} geo={box(0.16, 0.06, 0.16)} mat={p.light} edge={false} position={[0, 0.06, 0]} />
+    <group rotation={[Math.PI / 2, 0, 0]} scale={SCALE}>
       <Plough p={p} state={plough} />
       <SpinnerCar p={p} state={spinner} bar={bar} />
     </group>
