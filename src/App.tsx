@@ -3,6 +3,7 @@ import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
 import { Now } from "./components/Now";
 import { Projects } from "./components/Projects";
+import { Robotics } from "./components/Robotics";
 import { Experience } from "./components/Experience";
 import { About } from "./components/About";
 import { Contact } from "./components/Contact";
@@ -24,6 +25,7 @@ export default function App() {
           <Hero />
           <Now />
           <Projects />
+          <Robotics />
           <Experience />
           <About />
           <Contact />

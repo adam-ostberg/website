@@ -776,6 +776,31 @@ ul {
   }
 }
 
+/* ---------- essay ---------- */
+/*
+ * The robotics note: the one block of running prose on the page. It gets a measure
+ * and a size of its own, a step up from the cards on either side, because the change
+ * of texture is the point — this is the section meant to be read, not skimmed.
+ */
+.essay {
+  /* Sized to the text rather than the container: the frame should hug the measure,
+     not trail 200px of empty card past the end of every line. */
+  max-width: min(100%, clamp(620px, 52vw, 860px));
+}
+.essay__body {
+  padding: clamp(24px, 2.6vw, 40px);
+}
+.essay__body p {
+  margin: 0;
+  color: var(--s-fg);
+  font-size: clamp(1.05rem, 1.25vw, 1.3rem);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.essay__body p + p {
+  margin-top: 1.1em;
+}
+
 /* ---------- about ---------- */
 .about {
   display: grid;
