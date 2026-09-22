@@ -702,9 +702,9 @@ ul {
   margin-top: auto;
   padding-top: 4px;
 }
+/* No colour tween: like .btn, the pixel face shimmers if its colour eases. The inversion snaps. */
 .project__links a {
   font-size: 16px;
-  transition: background 0.15s, color 0.15s;
 }
 .project__links a:hover {
   background: var(--s-fg);

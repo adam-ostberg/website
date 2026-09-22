@@ -12,8 +12,21 @@ export function useReveal() {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
+            const el = entry.target as HTMLElement;
+            el.classList.add("is-visible");
+            io.unobserve(el);
+            /*
+             * Once in, drop out of [data-reveal] entirely. Its slow, staggered transition
+             * otherwise keeps overriding the element's own, so a card's hover lift would
+             * crawl in over 0.9s behind the pointer.
+             */
+            const done = (e: TransitionEvent) => {
+              if (e.target !== el || e.propertyName !== "opacity") return;
+              el.removeEventListener("transitionend", done);
+              el.removeAttribute("data-reveal");
+              el.classList.remove("is-visible");
+            };
+            el.addEventListener("transitionend", done);
           }
         }
       },
