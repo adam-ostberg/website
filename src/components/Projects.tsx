@@ -17,7 +17,15 @@ function Card({ p, i }: { p: Project; i: number }) {
         )}
         <div className="project__body">
           <h3>{p.title}</h3>
+          {p.role && <div className="project__role">{p.role}</div>}
           <p>{p.description}</p>
+          {p.facts && p.facts.length > 0 && (
+            <ul className="project__facts">
+              {p.facts.map((f) => (
+                <li key={f}>{f}</li>
+              ))}
+            </ul>
+          )}
           <div className="tags">
             {p.tags.map((t) => (
               <span className="tag" key={t}>
@@ -25,7 +33,7 @@ function Card({ p, i }: { p: Project; i: number }) {
               </span>
             ))}
           </div>
-          {(p.link || p.repo) && (
+          {(p.link || p.repo || p.report) && (
             <div className="project__links">
               {p.link && (
                 <a href={p.link} target="_blank" rel="noopener noreferrer">
@@ -35,6 +43,11 @@ function Card({ p, i }: { p: Project; i: number }) {
               {p.repo && (
                 <a href={p.repo} target="_blank" rel="noopener noreferrer">
                   [ source ↗ ]
+                </a>
+              )}
+              {p.report && (
+                <a href={p.report} target="_blank" rel="noopener noreferrer">
+                  [ report ↗ ]
                 </a>
               )}
             </div>
@@ -49,7 +62,7 @@ export function Projects() {
   return (
     <section id="projects" className="section section--light">
       <div className="container">
-        <SectionHead title="Things I've built." lede="From idea to prototype to something people can use." shape="pickup" />
+        <SectionHead title="Things I've built." shape="pickup" />
         <div className="projects">
           {projects.map((p, i) => (
             <Card p={p} i={i} key={p.title} />

@@ -1,7 +1,6 @@
 import { BackgroundScene, ShapesScene, useQuality } from "./three/Scene";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
-import { Now } from "./components/Now";
 import { Projects } from "./components/Projects";
 import { Robotics } from "./components/Robotics";
 import { Experience } from "./components/Experience";
@@ -23,10 +22,9 @@ export default function App() {
         <Nav />
         <main>
           <Hero />
-          <Now />
           <Projects />
-          <Robotics />
           <Experience />
+          <Robotics />
           <About />
           <Contact />
         </main>

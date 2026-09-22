@@ -5,6 +5,8 @@
 //    `description` and `tags` are required. Projects render in array order.
 // 3. Set `featured: true` on ONE project to make it the large card at the top.
 // Keep descriptions to two short sentences; the card is skimmed, not read.
+// `role` and `facts` are what a recruiter looks for: who you were on it, and
+// one or two numbers (users, data size, accuracy, team size).
 // ---------------------------------------------------------------------------
 
 export type Project = {
@@ -13,6 +15,10 @@ export type Project = {
   kind: string;
   year: string;
   description: string;
+  /** Your part in it, one short line, e.g. "Team of 5 · I built the scrapers and the price database". */
+  role?: string;
+  /** Up to three short, concrete facts. Numbers where possible. */
+  facts?: string[];
   tags: string[];
   /** Path under /public, e.g. "/assets/my-project.png". */
   image?: string;
@@ -21,6 +27,8 @@ export type Project = {
   link?: string;
   /** Source code URL. */
   repo?: string;
+  /** Write-up or report, e.g. "/assets/dropout-report.pdf". */
+  report?: string;
   /** Inverts the image colours (useful for light plots if a card is ever dark). */
   invertForDark?: boolean;
   /** Renders as the large card spanning the full width. */
@@ -33,12 +41,24 @@ export const projects: Project[] = [
     kind: "Web app · Bachelor's project",
     year: "2026",
     description:
-      "Enter a shopping list and it works out what to buy where, balancing price against how far you'd travel. Custom scrapers pulled several million price points from every major Swedish grocery chain to make the comparison possible.",
+      "Enter a shopping list and it works out what to buy where, balancing price against how far you'd travel. It runs on several million price points scraped from ICA and Coop stores.",
+    role: "Team of 4 · I built the web scrapers and the price database, and helped on the web app.",
     tags: ["Web scraping", "SQL", "TypeScript", "React"],
-    image: "/assets/matjakt.png",
-    imageAlt: "The matjakt website",
+    image: "/assets/matjakt.jpg",
+    imageAlt: "The Matjakt start page, showing live price finds from Stockholm grocery stores",
     link: "https://matjakt.org/",
     featured: true,
+  },
+  {
+    title: "This website",
+    kind: "3D web · Personal project",
+    year: "2026",
+    description:
+      "Every robot on this page is built from boxes and cylinders in code, with no 3D models. The arms solve their own inverse kinematics, and one of them misses its first grab on purpose.",
+    tags: ["three.js", "React Three Fiber", "GLSL", "TypeScript"],
+    image: "/assets/site.jpg",
+    imageAlt: "The robot production line from the top of this page",
+    repo: "https://github.com/adam-ostberg/website",
   },
   {
     title: "CineMatcher",

@@ -1,4 +1,5 @@
 import { experience, education } from "../content/experience";
+import { skills } from "../content/skills";
 import { SectionHead } from "./SectionHead";
 import { delay } from "./util";
 
@@ -23,6 +24,11 @@ export function Experience() {
                   <h3>{e.role}</h3>
                   <div className="row__org">{e.org}</div>
                   <p className="row__text">{e.text}</p>
+                  {e.link && (
+                    <a className="row__link" href={e.link.href} target="_blank" rel="noopener noreferrer">
+                      [ {e.link.label} ↗ ]
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
@@ -42,6 +48,20 @@ export function Experience() {
                   <div className="row__org">{e.school}</div>
                   <p className="row__text">{e.text}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="log win" data-reveal>
+          <div className="win__bar">
+            <span>skills.txt</span>
+          </div>
+          <div className="rows rows--tight">
+            {skills.map((s) => (
+              <div className="row" key={s.label}>
+                <div className="row__period">{s.label}</div>
+                <p className="row__text">{s.items}</p>
               </div>
             ))}
           </div>

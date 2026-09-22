@@ -7,7 +7,11 @@ export function Footer() {
         <span>
           © {new Date().getFullYear()} {site.name}
         </span>
-        <span>github</span>
+        {site.github && (
+          <a href={site.github} target="_blank" rel="noopener noreferrer">
+            github ↗
+          </a>
+        )}
         <span>{site.location.toLowerCase()}</span>
       </div>
     </footer>

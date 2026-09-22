@@ -1,17 +1,9 @@
+// The about section: one large lead sentence, then a few short paragraphs. Specific beats general here.
 export const about = {
-  lead: "I like building tools that are thoughtfully designed and actually useful. And I'm just as curious about why some products take off.",
-  columns: [
-    {
-      title: "How I think",
-      items: ["AI/ML depth with an eye for the interface.", "Interested in the business side: why build it, and for whom."],
-    },
-    {
-      title: "Beyond code",
-      items: ["Skiing, mountain biking, hiking.", "Gym, cars, spontaneous plans with friends."],
-    },
-    {
-      title: "In a team",
-      items: ["Comfortable pitching and presenting.", "Organizing big projects, like co-directing a short film."],
-    },
+  lead: "Most of my free time is spent in the mountains: skiing in winter, mountain biking and hiking the rest of the year.",
+  paragraphs: [
+    "Programming clicked during a school year in Oxford in ninth grade, where I won the school's Computer Award.",
+    "I'm also interested in the business side. I spent a summer doing B2B sales in Lisbon, and I find why a product takes off just as interesting as how it's built.",
+    "Otherwise it's the gym, cars, and plans made the same afternoon.",
   ],
 };

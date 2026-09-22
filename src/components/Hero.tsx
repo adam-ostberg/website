@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { site } from "../content/site";
+import { scrollTo } from "../lib/scroll";
 import { delay } from "./util";
 
 /** Current time in Stockholm, refreshed every 15 seconds. */
@@ -19,6 +20,26 @@ function LocalTime() {
   );
 }
 
+/** The intro paragraph, with its one in-page link spliced in. */
+function Intro() {
+  const { text, link } = site.intro;
+  const at = text.indexOf(link.text);
+  if (at < 0) return <>{text}</>;
+  const go = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    scrollTo(link.href);
+  };
+  return (
+    <>
+      {text.slice(0, at)}
+      <a className="hero__link" href={link.href} onClick={go}>
+        {link.text}
+      </a>
+      {text.slice(at + link.text.length)}
+    </>
+  );
+}
+
 export function Hero() {
   return (
     <header id="top" className="hero">
@@ -28,24 +49,27 @@ export function Hero() {
           <br />
           <em>{site.lastName}</em>
         </h1>
-        <div className="hero__row">
-          <p className="hero__intro" data-reveal style={delay(80)}>
-            {site.intro}
-          </p>
-          <div className="hero__actions" data-reveal style={delay(160)}>
-            <a className="btn btn--primary" href={`mailto:${site.email}`}>
-              Email me
-            </a>
-            <a className="btn" href={site.cv} target="_blank" rel="noopener noreferrer">
-              Download CV ↗
-            </a>
-          </div>
+        <p className="hero__intro" data-reveal style={delay(80)}>
+          <Intro />
+        </p>
+        <div className="hero__actions" data-reveal style={delay(160)}>
+          <a className="btn btn--primary" href={`mailto:${site.email}`}>
+            Email me
+          </a>
+          <a className="btn" href={site.cv} target="_blank" rel="noopener noreferrer">
+            Download CV ↗
+          </a>
         </div>
         <div className="hero__meta label" data-reveal style={delay(240)}>
           <LocalTime />
-          {site.metaRow.map((m) => (
-            <span key={m}>{m}</span>
-          ))}
+          <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+            linkedin ↗
+          </a>
+          {site.github && (
+            <a href={site.github} target="_blank" rel="noopener noreferrer">
+              github ↗
+            </a>
+          )}
         </div>
       </div>
       {/*

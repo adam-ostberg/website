@@ -5,6 +5,8 @@ export type Experience = {
   location?: string;
   /** One sentence. */
   text: string;
+  /** Optional link shown under the text, e.g. the finished film. */
+  link?: { label: string; href: string };
 };
 
 export const experience: Experience[] = [
@@ -13,13 +15,14 @@ export const experience: Experience[] = [
     org: "Stealth AI startup",
     period: "2026 - present",
     location: "Stockholm",
-    text: "Creating and quality-checking the training data behind AI/ML models.",
+    text: "Creating and quality-checking training data for ML models. Most of the details are under NDA.",
   },
   {
     role: "Co-director, student short film",
     org: "KTH",
     period: "2025 - 2026",
-    text: "Led a year-long short film with a large multidisciplinary student team.",
+    text: "Co-led a year-long short film with a crew of 10+ students.",
+    // link: { label: "watch", href: "https://…" },
   },
   {
     role: "B2B prospecting",
@@ -33,7 +36,7 @@ export const experience: Experience[] = [
 export type Education = {
   degree: string;
   school: string;
-  period?: string;
+  period: string;
   text: string;
 };
 
@@ -49,10 +52,5 @@ export const education: Education[] = [
     school: "KTH Royal Institute of Technology",
     period: "2023 - 2026",
     text: "HCI, machine learning, web development and product innovation.",
-  },
-  {
-    degree: "High school year abroad",
-    school: "Oxford, United Kingdom",
-    text: "Where programming clicked. Won the school's Computer Award.",
   },
 ];

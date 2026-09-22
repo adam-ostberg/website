@@ -7,7 +7,7 @@ export function About() {
   return (
     <section id="about" className="section section--light">
       <div className="container">
-        <SectionHead title="Beyond the code." shape="retry" />
+        <SectionHead title="The rest of me." shape="retry" />
         <div className="about">
           <figure className="about__portrait win" data-reveal>
             <div className="win__bar">
@@ -20,19 +20,17 @@ export function About() {
             <p className="about__lead" data-reveal>
               {about.lead}
             </p>
-            <div className="about__cols">
-              {about.columns.map((c, i) => (
-                <div className="win" key={c.title} data-reveal style={delay(i * 80)}>
-                  <div className="win__bar">
-                    <span>{c.title.toLowerCase()}</span>
-                  </div>
-                  <ul>
-                    {c.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+            <div className="about__notes win" data-reveal style={delay(80)}>
+              <div className="win__bar">
+                <span>notes.txt</span>
+              </div>
+              <div className="about__notes-body">
+                {about.paragraphs.map((p) => (
+                  <p className="about__text" key={p}>
+                    {p}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
         </div>

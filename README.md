@@ -13,14 +13,16 @@ npm run dev
 
 Everything you'd normally change lives in `src/content/`:
 
-| File            | What it controls                                  |
-| --------------- | ------------------------------------------------- |
-| `site.ts`       | Name, email, LinkedIn, CV path, hero intro        |
-| `now.ts`        | The three "right now" cells under the hero        |
-| `projects.ts`   | Project cards (instructions at the top of file)   |
-| `experience.ts` | Work experience and education rows                |
-| `skills.ts`     | Tools shown in the scrolling strip                |
-| `about.ts`      | About lead paragraph and the three columns        |
+| File            | What it controls                                             |
+| --------------- | ------------------------------------------------------------ |
+| `site.ts`       | Name, email, LinkedIn, GitHub, CV path, hero intro and link  |
+| `projects.ts`   | Project cards, incl. optional `role` and `facts` (see top)   |
+| `experience.ts` | Work experience and education rows                           |
+| `skills.ts`     | The skills.txt window at the end of the experience section   |
+| `robotics.ts`   | The "Why robots." note, plus an optional photo of the robot  |
+| `about.ts`      | About lead sentence and the notes.txt paragraphs             |
+
+Page order: hero → projects → experience → why robots → about → contact.
 
 Images and the CV PDF go in `public/assets/` and are referenced as `/assets/<file>`.
 `public/assets/og.jpg` is the link preview image (1200×630) used by LinkedIn and others.
@@ -46,9 +48,8 @@ Text, borders and cards adapt automatically through the `--s-*` tokens.
 ## 3D scene
 
 - `src/three/ParticleField.tsx`: the neural particle field behind the hero (custom shaders).
-- `src/three/shapes.tsx`: the geometric shapes (`cube`, `frame`, `cluster`, `octa`).
-- `src/three/SectionShapes.tsx`: positions a shape over every `[data-shape]` element in the page, on a transparent canvas in front of the content.
-  To put a shape somewhere, add `<div className="shape-anchor" data-shape="cube" />` and lay it out with CSS.
+- `src/three/robots/Stations.tsx`: plays a robot station over every `[data-shape]` element in the page, on a transparent canvas in front of the content.
+  Section headings pick one with `<SectionHead shape="…" />` (`hero`, `arm`, `pickup`, `relay`, `spar`, `retry`).
   `data-ink` and `data-accent` change its colours.
 - `src/lib/quality.ts`: picks the render tier (bloom + full particle count on desktop, lighter on phones, static frame with reduced motion, nothing without WebGL).
 

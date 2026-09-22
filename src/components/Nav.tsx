@@ -4,8 +4,8 @@ import { scrollTo } from "../lib/scroll";
 
 const links: [string, string][] = [
   ["projects", "#projects"],
-  ["robotics", "#robotics"],
   ["experience", "#experience"],
+  ["robotics", "#robotics"],
   ["about", "#about"],
   ["contact", "#contact"],
 ];
