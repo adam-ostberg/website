@@ -160,23 +160,15 @@ ul {
 .page {
   position: relative;
 }
+/* A still texture: animating it repainted a full-screen layer on every step for grain nobody saw move. */
 .grain {
   position: fixed;
-  /* Just enough overscan for the jitter below: at -50% the layer was 4x the screen, huge on 4K. */
-  inset: -15%;
+  inset: 0;
   z-index: 20;
   pointer-events: none;
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 260px 260px;
-  animation: grain 7s steps(8) infinite;
-}
-@keyframes grain {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-3%, -6%); }
-  50% { transform: translate(4%, 2%); }
-  75% { transform: translate(-2%, 5%); }
-  100% { transform: translate(3%, -3%); }
 }
 
 .container {
@@ -233,7 +225,7 @@ ul {
   z-index: 5;
   border: 2px solid var(--s-fg);
   background: var(--s-card);
-  box-shadow: 6px 6px 0 var(--s-fg);
+  box-shadow: 6px 6px 0 var(--s-shadow, var(--s-fg));
 }
 .win__bar {
   display: flex;
@@ -500,16 +492,27 @@ ul {
   background-image: radial-gradient(rgba(30, 30, 30, 0.28) 1px, transparent 1.3px);
   background-size: 7px 7px;
 }
+/* Dark ground inside the page: light dots, raised cards, and pink window shadows like the hero buttons. */
+.section--ink {
+  --s-card: var(--bg-elev);
+  --s-shadow: var(--accent);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1.3px);
+  background-size: 7px 7px;
+}
 .section--light ::selection {
   background: var(--ink);
   color: #fff;
 }
+/*
+ * Heading bottom-aligned with the robots beside it, so it sits on the content it
+ * introduces instead of floating mid-way down a block as tall as the station.
+ */
 .section-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 40px;
-  align-items: center;
-  margin-bottom: clamp(32px, 4vw, 56px);
+  align-items: end;
+  margin-bottom: clamp(28px, 3.5vw, 48px);
 }
 .section-head--plain {
   grid-template-columns: 1fr;
@@ -520,13 +523,13 @@ ul {
   line-height: 1;
   letter-spacing: -0.035em;
   margin: 0 0 20px;
-  max-width: 16ch;
+  max-width: 18ch;
 }
 .section-head h2:last-child {
   margin-bottom: 0;
 }
 .shape-anchor {
-  height: clamp(200px, 19vw, 300px);
+  height: clamp(190px, 17vw, 260px);
 }
 @media (max-width: 900px) {
   .section-head {
@@ -750,19 +753,24 @@ ul {
  * and a size of its own, a step up from the cards on either side, because the change
  * of texture is the point — this is the section meant to be read, not skimmed.
  */
-.essay {
-  /* Sized to the text rather than the container: the frame should hug the measure,
-     not trail 200px of empty card past the end of every line. */
-  max-width: min(100%, clamp(620px, 52vw, 860px));
-}
-.essay-wrap--photo {
+.essay-wrap {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
   gap: clamp(28px, 3vw, 48px);
-  align-items: start;
 }
-.essay-wrap--photo .essay {
-  max-width: none;
+.essay__side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(28px, 3vw, 48px);
+}
+/*
+ * The fight needs about twice its height in width. Nudged right into the page margin
+ * so the cars keep clear of the note; robots are free to leave through the edges.
+ */
+.essay__arena {
+  height: clamp(200px, 17vw, 250px);
+  margin-right: calc(-1 * var(--pad) / 2);
 }
 .essay__photo {
   margin: 0;
@@ -773,8 +781,18 @@ ul {
   object-fit: cover;
 }
 @media (max-width: 900px) {
-  .essay-wrap--photo {
+  .essay-wrap {
     grid-template-columns: 1fr;
+  }
+  /* Stacked: fight above the note like the other sections' robots, photo after it. */
+  .essay__side {
+    display: contents;
+  }
+  /* The cars swing a little past the anchor's top; the margin keeps them off the heading. */
+  .essay__arena {
+    order: -1;
+    height: 200px;
+    margin: 40px 0 8px;
   }
   .essay__photo {
     max-width: 420px;
@@ -915,7 +933,7 @@ ul {
   }
   /* Held windows throw a longer shadow, as if lifted off the page. */
   .win.is-dragging {
-    box-shadow: 12px 12px 0 var(--s-fg);
+    box-shadow: 12px 12px 0 var(--s-shadow, var(--s-fg));
   }
   @media (prefers-reduced-motion: reduce) {
     .win__bar {
@@ -943,7 +961,6 @@ ul {
     transform: none;
     transition: none;
   }
-  .grain,
   .hero__scroll {
     animation: none;
   }

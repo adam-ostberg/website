@@ -7,7 +7,7 @@ export function Experience() {
   return (
     <section id="experience" className="section section--light">
       <div className="container">
-        <SectionHead title="Where I've worked and studied." shape="relay" />
+        <SectionHead title="Work and study." shape="relay" />
 
         <div className="log win" data-reveal>
           <div className="win__bar">
