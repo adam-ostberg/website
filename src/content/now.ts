@@ -13,6 +13,6 @@ export const now = [
   {
     label: "looking for",
     title: "Summer 2027 internship",
-    text: "Software or ML engineering at a larger company.",
+    text: "Software or ML engineering internship",
   },
 ];

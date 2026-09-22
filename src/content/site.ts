@@ -10,6 +10,6 @@ export const site = {
   // Put a new PDF in /public/assets and update the path here.
   cv: "/assets/CV-AdamOstberg.pdf",
   intro:
-    "Computer science master's student at KTH, focused on AI & Robotics. I build useful AI tools. Looking for a summer 2027 internship.",
+    "Computer science master's student at KTH, focused on AI & Robotics. Looking for a summer 2027 internship.",
   metaRow: ["m.sc. computer science - kth", "ai & robotics"],
 };
