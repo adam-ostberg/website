@@ -21,7 +21,7 @@ function mulberry32(a: number) {
   };
 }
 
-const CLUSTERS: [number, number, number][] = [
+export const CLUSTERS: [number, number, number][] = [
   [-2.6, 0.9, -0.4],
   [1.4, -1.1, 0.3],
   [3.2, 1.3, -0.8],

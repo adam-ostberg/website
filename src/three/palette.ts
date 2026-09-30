@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import * as THREE from "three";
+import { useXray } from "../lib/xray";
 
 /** Materials for one station, tinted for the section it sits on. */
 export type Palette = {
@@ -36,6 +37,11 @@ export function usePalette(ink: string, accent: string, solid = "#4a4a4a", dark 
     }),
     [ink, accent, solid, dark]
   );
+  // X-ray mode: the bodies turn to wireframe, the outlines and lit parts stay.
+  const xray = useXray();
+  useEffect(() => {
+    palette.solid.wireframe = palette.dark.wireframe = palette.ghost.wireframe = xray;
+  }, [palette, xray]);
   useEffect(
     () => () => {
       Object.values(palette).forEach((m) => m.dispose());

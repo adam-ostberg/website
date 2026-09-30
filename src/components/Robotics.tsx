@@ -23,6 +23,9 @@ export function Robotics() {
                   {p}
                 </p>
               ))}
+              <p className="essay__closing" data-reveal style={delay(robotics.paragraphs.length * 60)}>
+                {robotics.closing}
+              </p>
             </div>
           </div>
           <div className="essay__side">

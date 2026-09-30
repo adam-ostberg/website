@@ -7,11 +7,17 @@ export function Footer() {
         <span>
           © {new Date().getFullYear()} {site.name}
         </span>
-        {site.github && (
-          <a href={site.github} target="_blank" rel="noopener noreferrer">
-            github ↗
-          </a>
-        )}
+        <span className="footer__built">
+          built by hand in react, three.js and glsl
+          {site.repo && (
+            <>
+              {" · "}
+              <a href={site.repo} target="_blank" rel="noopener noreferrer">
+                source ↗
+              </a>
+            </>
+          )}
+        </span>
         <span>{site.location.toLowerCase()}</span>
       </div>
     </footer>

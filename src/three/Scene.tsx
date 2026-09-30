@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { detectQuality, type Quality } from "../lib/quality";
+import type { Quality } from "../lib/quality";
 import { usePointerTracking } from "../lib/world";
 import { ParticleField } from "./ParticleField";
 import { Stations, stationsNearby } from "./robots/Stations";
@@ -55,14 +55,10 @@ function backgroundShowing(): boolean {
   return top > 0 || bottom < window.innerHeight;
 }
 
-export function useQuality(): Quality {
-  return useMemo(detectQuality, []);
-}
-
 /**
  * Particle field on a canvas fixed behind the page, visible wherever a section is dark.
- * It is deliberately faint: the hero's subject is the robot line in front of it, and the
- * field is only here to keep the dark sections from going flat.
+ * It stays quiet behind the hero text (see uMask) and lives on the open right side, with
+ * pulses of light travelling through it; the robot line in front is still the subject.
  */
 export function BackgroundScene({ quality }: { quality: Quality }) {
   const high = quality === "high";
@@ -80,7 +76,7 @@ export function BackgroundScene({ quality }: { quality: Quality }) {
         frameloop={reduced ? "demand" : "always"}>
         {/* Must match --bg: this canvas sits directly behind the dark sections. */}
         <color attach="background" args={["#0c0a08"]} />
-        <ParticleField count={high ? 750 : 380} interactive={high} frozen={reduced} strength={0.42} />
+        <ParticleField count={high ? 750 : 380} interactive={high} frozen={reduced} strength={0.9} />
         {reduced ? <InvalidateOnScroll /> : <PlayWhile active={backgroundShowing} />}
       </Canvas>
     </div>

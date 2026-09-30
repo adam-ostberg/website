@@ -1,4 +1,5 @@
-import { BackgroundScene, ShapesScene, useQuality } from "./three/Scene";
+import { lazy, Suspense, useMemo } from "react";
+import { detectQuality } from "./lib/quality";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
 import { Projects } from "./components/Projects";
@@ -10,15 +11,27 @@ import { Footer } from "./components/Footer";
 import { useReveal } from "./lib/useReveal";
 import { useDragWindows } from "./lib/useDragWindows";
 
+/*
+ * three.js and the scene are most of the bundle, so they load after the page has painted: the
+ * text is readable straight away, and the robots come up behind it a moment later.
+ */
+const BackgroundScene = lazy(() => import("./three/Scene").then((m) => ({ default: m.BackgroundScene })));
+const ShapesScene = lazy(() => import("./three/Scene").then((m) => ({ default: m.ShapesScene })));
+
 export default function App() {
-  const quality = useQuality();
+  const quality = useMemo(detectQuality, []);
   useReveal();
   useDragWindows();
 
   return (
     <>
-      <BackgroundScene quality={quality} />
+      <Suspense fallback={null}>
+        <BackgroundScene quality={quality} />
+      </Suspense>
       <div className="page">
+        <a className="skip" href="#projects">
+          Skip to projects
+        </a>
         <Nav />
         <main>
           <Hero />
@@ -30,7 +43,9 @@ export default function App() {
         </main>
         <Footer />
       </div>
-      <ShapesScene quality={quality} />
+      <Suspense fallback={null}>
+        <ShapesScene quality={quality} />
+      </Suspense>
       <div className="grain" aria-hidden="true" />
     </>
   );

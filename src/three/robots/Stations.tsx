@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { usePalette } from "../palette";
+import { xray } from "../../lib/xray";
 import { Arm, mix, reach, type ArmState, type Joints } from "./Arm";
 import { Rover, type RoverState } from "./Rover";
 import { Drone, bank, cableFor, type DroneState } from "./Drone";
@@ -257,6 +258,10 @@ export function Stations({ frozen, detail }: { frozen: boolean; detail: boolean 
     const id = requestAnimationFrame(collect);
     return () => cancelAnimationFrame(id);
   }, []);
+
+  // Redraw on toggling x-ray, for the tiers whose loop only runs on demand.
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => xray.subscribe(invalidate), [invalidate]);
 
   // Scroll speed → shared boost for wheels, rotors and belts.
   const scroll = useRef({ y: 0, v: 0 });

@@ -1,6 +1,17 @@
 import { projects, type Project } from "../content/projects";
+import { useXray, xray } from "../lib/xray";
 import { SectionHead } from "./SectionHead";
 import { delay } from "./util";
+
+/** Switches every robot on the page to wireframe, to show they are nothing but boxes and cylinders. */
+function XrayToggle() {
+  const on = useXray();
+  return (
+    <button type="button" className="project__toggle" aria-pressed={on} onClick={() => xray.toggle()}>
+      [ x-ray: {on ? "on" : "off"} ]
+    </button>
+  );
+}
 
 function Card({ p, i }: { p: Project; i: number }) {
   return (
@@ -33,8 +44,9 @@ function Card({ p, i }: { p: Project; i: number }) {
               </span>
             ))}
           </div>
-          {(p.link || p.repo || p.report) && (
+          {(p.link || p.repo || p.report || p.xray) && (
             <div className="project__links">
+              {p.xray && <XrayToggle />}
               {p.link && (
                 <a href={p.link} target="_blank" rel="noopener noreferrer">
                   [ live ↗ ]

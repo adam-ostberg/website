@@ -20,8 +20,8 @@ function LocalTime() {
   );
 }
 
-/** The intro paragraph, with its one in-page link spliced in. */
-function Intro() {
+/** The story sentence, with its one in-page link spliced in. */
+function Story() {
   const { text, link } = site.intro;
   const at = text.indexOf(link.text);
   if (at < 0) return <>{text}</>;
@@ -49,9 +49,13 @@ export function Hero() {
           <br />
           <em>{site.lastName}</em>
         </h1>
-        <p className="hero__intro" data-reveal style={delay(80)}>
-          <Intro />
-        </p>
+        <div className="hero__intro" data-reveal style={delay(80)}>
+          <p className="hero__lead">{site.intro.lead}</p>
+          <p>
+            <Story />
+          </p>
+          <p className="hero__ask">{site.intro.ask}</p>
+        </div>
         <div className="hero__actions" data-reveal style={delay(160)}>
           <a className="btn btn--primary" href={`mailto:${site.email}`}>
             Email me

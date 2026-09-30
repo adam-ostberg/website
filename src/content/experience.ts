@@ -51,6 +51,6 @@ export const education: Education[] = [
     degree: "B.Sc. Media Technology",
     school: "KTH Royal Institute of Technology",
     period: "2023 - 2026",
-    text: "HCI, machine learning, web development and product innovation.",
+    text: "HCI, machine learning, web development and product innovation. Degree project: Matjakt.",
   },
 ];

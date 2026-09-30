@@ -24,31 +24,43 @@ function CopyEmail() {
 export function Contact() {
   return (
     <section id="contact" className="section contact">
-      <div className="container">
-        <h2 data-reveal>Let's talk.</h2>
-        <p className="lede" data-reveal style={delay(80)}>
-          I'm looking for a summer 2027 internship in software or ML engineering, ideally somewhere close to robotics.
-          Email is the fastest way to reach me.
-        </p>
-        <div className="contact__email-row" data-reveal style={delay(160)}>
-          <a className="contact__email" href={`mailto:${site.email}`}>
-            {site.email}
-          </a>
-          <CopyEmail />
-        </div>
-        <div className="contact__links" data-reveal style={delay(240)}>
-          <a className="btn" href={site.linkedin} target="_blank" rel="noopener noreferrer">
-            LinkedIn ↗
-          </a>
-          {site.github && (
-            <a className="btn" href={site.github} target="_blank" rel="noopener noreferrer">
-              GitHub ↗
+      <div className="container contact__grid">
+        <div>
+          <h2 data-reveal>Summer 2027?</h2>
+          <p className="lede" data-reveal style={delay(80)}>
+            I'm looking for an internship in software or ML engineering, ideally somewhere close to robotics. Email is
+            the fastest way to reach me.
+          </p>
+          <div className="contact__email-row" data-reveal style={delay(160)}>
+            <a className="contact__email" href={`mailto:${site.email}`}>
+              {site.email}
             </a>
-          )}
-          <a className="btn" href={site.cv} target="_blank" rel="noopener noreferrer">
-            Download CV ↗
-          </a>
+            <CopyEmail />
+          </div>
+          <div className="contact__links" data-reveal style={delay(240)}>
+            <a className="btn" href={site.linkedin} target="_blank" rel="noopener noreferrer">
+              LinkedIn ↗
+            </a>
+            {site.github && (
+              <a className="btn" href={site.github} target="_blank" rel="noopener noreferrer">
+                GitHub ↗
+              </a>
+            )}
+            <a className="btn" href={site.cv} target="_blank" rel="noopener noreferrer">
+              Download CV ↗
+            </a>
+          </div>
         </div>
+        {/* The one station not used elsewhere: a package is lifted onto a rover and sent off. Light ink, like the hero's. */}
+        <div
+          className="contact__stage"
+          data-shape="arm"
+          data-ink="#e8e8e8"
+          data-accent="#f386a1"
+          data-solid="#6e6e74"
+          data-dark="#3a3a40"
+          aria-hidden="true"
+        />
       </div>
     </section>
   );

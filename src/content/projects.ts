@@ -33,6 +33,8 @@ export type Project = {
   invertForDark?: boolean;
   /** Renders as the large card spanning the full width. */
   featured?: boolean;
+  /** Adds the x-ray toggle, which switches every robot on the page to wireframe. Only makes sense on this site's own card. */
+  xray?: boolean;
 };
 
 export const projects: Project[] = [
@@ -54,7 +56,12 @@ export const projects: Project[] = [
     kind: "3D web · Personal project",
     year: "2026",
     description:
-      "Every robot on this page is built from boxes and cylinders in code, with no 3D models. The arms solve their own inverse kinematics, and one of them misses its first grab on purpose.",
+      "Every robot on this page is built from boxes and cylinders in code. The arms solve their own inverse kinematics, and one of them misses its first grab on purpose.",
+    facts: [
+      "5 robot scenes, choreographed with keyframes in code",
+      "About 4,500 lines of TypeScript, GLSL and CSS, and no 3D model files",
+    ],
+    xray: true,
     tags: ["three.js", "React Three Fiber", "GLSL", "TypeScript"],
     image: "/assets/site.jpg",
     imageAlt: "The robot production line from the top of this page",
@@ -64,8 +71,8 @@ export const projects: Project[] = [
     title: "CineMatcher",
     kind: "Web app · Team project",
     year: "2024",
-    description:
-      "Swipe, match, watch. Helps a group agree on a movie through live sessions and a matching algorithm. Built with two friends.",
+    description: "Swipe, match, watch. Helps a group agree on a movie through live sessions and a matching algorithm.",
+    role: "Team of 3, built with two friends.",
     tags: ["TypeScript", "React", "Firebase"],
     image: "/assets/cinematcher.jpg",
     imageAlt: "The CineMatcher application",

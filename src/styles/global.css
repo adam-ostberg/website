@@ -115,6 +115,23 @@ ul {
   white-space: nowrap;
 }
 
+/* Visible only when focused, for keyboard users who would otherwise tab through the whole nav first. */
+.skip {
+  position: absolute;
+  left: var(--pad);
+  top: 8px;
+  z-index: 30;
+  padding: 6px 12px;
+  background: var(--fg);
+  color: var(--bg);
+  font-family: var(--px);
+  font-size: 16px;
+  transform: translateY(-200%);
+}
+.skip:focus {
+  transform: none;
+}
+
 /* ---------- layers ---------- */
 /*
  * Stacking order, all in #root's context: background canvas 0, the page itself (auto),
@@ -423,12 +440,26 @@ ul {
   font-style: normal;
   color: var(--fg-2);
 }
+/* Three beats: who (bright), the story (grey), the ask (bright). Skimmed top to bottom. */
 .hero__intro {
   font-size: clamp(1.15rem, 1.8vw, 1.45rem);
   color: var(--fg-2);
   max-width: 34em;
-  margin: 0;
+  display: grid;
+  gap: 0.6em;
   text-wrap: pretty;
+}
+.hero__intro p {
+  margin: 0;
+}
+.hero__intro .hero__lead,
+.hero__intro .hero__ask {
+  color: var(--fg);
+}
+.hero__intro .hero__lead {
+  font-size: 1.12em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 /* The one link in the intro: points at the robotics note, so it gets the accent. */
 .hero__link {
@@ -653,10 +684,15 @@ ul {
   padding-top: 4px;
 }
 /* No colour tween: like .btn, the pixel face shimmers if its colour eases. The inversion snaps. */
-.project__links a {
+.project__links a,
+.project__toggle {
+  font-family: var(--px);
+  -webkit-font-smoothing: none;
   font-size: 16px;
 }
-.project__links a:hover {
+.project__links a:hover,
+.project__toggle:hover,
+.project__toggle[aria-pressed="true"] {
   background: var(--s-fg);
   color: var(--s-bg);
 }
@@ -678,8 +714,48 @@ ul {
 }
 
 /* ---------- experience ---------- */
-.log + .log {
-  margin-top: clamp(32px, 4vw, 52px);
+/* Work on the left, and education and skills stacked beside it, so the windows use the width. */
+.xp {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-areas: "work edu" "work skills";
+  gap: clamp(28px, 3vw, 44px);
+  align-items: start;
+}
+.xp__work {
+  grid-area: work;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.xp__work .rows {
+  flex: 1;
+}
+.xp__edu {
+  grid-area: edu;
+}
+.xp__skills {
+  grid-area: skills;
+}
+.xp .row {
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.xp .row__period {
+  padding-top: 0;
+}
+.xp .rows--tight .row {
+  grid-template-columns: 104px 1fr;
+  gap: 12px;
+}
+.xp .row__text {
+  max-width: 52ch;
+}
+@media (max-width: 900px) {
+  .xp {
+    grid-template-columns: 1fr;
+    grid-template-areas: "work" "edu" "skills";
+  }
 }
 .row {
   display: grid;
@@ -811,6 +887,17 @@ ul {
 .essay__body p + p {
   margin-top: 1.1em;
 }
+/* The sign-off: the sans at heading size, with the accent underlining it. */
+.essay__body .essay__closing {
+  margin-top: clamp(28px, 3vw, 44px);
+  padding-top: clamp(20px, 2vw, 28px);
+  border-top: 2px solid var(--s-fg);
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
 
 /* ---------- about ---------- */
 .about {
@@ -867,6 +954,24 @@ ul {
 .contact h2 {
   font-size: clamp(3rem, 8vw, 7rem);
 }
+.contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 40px;
+  align-items: center;
+}
+.contact__stage {
+  height: clamp(220px, 20vw, 300px);
+}
+@media (max-width: 900px) {
+  .contact__grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .contact__stage {
+    height: 200px;
+  }
+}
 .contact .lede {
   color: var(--fg-2);
 }
@@ -911,6 +1016,9 @@ ul {
 }
 .footer a {
   color: var(--fg);
+}
+.footer__built {
+  text-align: center;
 }
 .footer a:hover {
   background: var(--fg);
