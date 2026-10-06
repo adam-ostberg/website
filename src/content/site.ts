@@ -18,8 +18,8 @@ export const site = {
    */
   intro: {
     lead: "CS master's student at KTH, on the AI & Robotics track.",
-    text: "I've scraped millions of grocery prices, co-directed a short film, and I'm still a little bitter about coming second in a high-school robot fight.",
+    text: "I've scraped millions of grocery prices, co-directed a short film, and had my robot fight in a competition.",
     ask: "Looking for a summer 2027 internship in software or ML.",
-    link: { text: "coming second in a high-school robot fight", href: "#robotics" },
+    link: { text: "had my robot fight in a competition", href: "#robotics" },
   },
 };
