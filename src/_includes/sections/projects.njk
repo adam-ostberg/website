@@ -1,0 +1,6 @@
+<section>
+  <h2>Selected projects</h2>
+  {%- set projects = collections.projects | featured %}
+  {% include "partials/project-list.njk" %}
+  <p class="more"><a href="/projects/">All projects →</a></p>
+</section>

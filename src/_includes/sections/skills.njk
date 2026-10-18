@@ -1,0 +1,9 @@
+<section>
+  <h2>Skills</h2>
+  <dl class="skills">
+    {%- for s in skills %}
+    <dt>{{ s.group }}</dt>
+    <dd>{{ s.items | join(", ") }}</dd>
+    {%- endfor %}
+  </dl>
+</section>

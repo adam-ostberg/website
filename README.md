@@ -1,59 +1,62 @@
-# adamostberg.com
+# website_v2
 
-Personal site. Vite + React + React Three Fiber, deployed to GitHub Pages.
-
-## Run locally
+Minimal portfolio built with [Eleventy](https://www.11ty.dev/). Content lives in data files, and templates only render it.
 
 ```sh
 npm install
-npm run dev
+npm run dev     # http://localhost:8080
+npm run build   # outputs to _site/
 ```
 
-## Edit content
+## Editing content
 
-Everything you'd normally change lives in `src/content/`:
+| What                    | Where                                  |
+| ----------------------- | -------------------------------------- |
+| Name, tagline, intro    | `src/_data/site.json`                  |
+| Header nav / footer     | `site.json` → `nav`, `links`           |
+| Skills                  | `src/_data/skills.json`                |
+| Experience / education  | `src/_data/experience.json`, `education.json` |
+| Projects                | `src/projects/*.md` (one file each)    |
+| Home section order      | `sections:` in `src/index.njk`         |
+| CV and other static files | `src/static/` (copied to site root, e.g. `cv.pdf`) |
+| Figures                 | `src/assets/img/`                      |
 
-| File            | What it controls                                             |
-| --------------- | ------------------------------------------------------------ |
-| `site.ts`       | Name, email, LinkedIn, GitHub, CV path, hero intro and link  |
-| `projects.ts`   | Project cards, incl. optional `role` and `facts` (see top)   |
-| `experience.ts` | Work experience and education rows                           |
-| `skills.ts`     | The skills.txt window at the end of the experience section   |
-| `robotics.ts`   | The "Why robots." note, plus an optional photo of the robot  |
-| `about.ts`      | About lead sentence and the notes.txt paragraphs             |
+### Projects
 
-Page order: hero → projects → experience → why robots → about → contact.
+```yaml
+---
+title: Project name
+date: 2026-09-01          # sorts newest first; year is shown
+summary: One sentence.
+stack: [Python, PyTorch]
+featured: true            # show on the home page
+order: 1                  # optional, pins above date sorting
+image: /assets/img/x.png  # optional thumbnail in home/projects lists
+imageAlt: What it shows   # optional alt text
+links:                    # any labels, rendered in order
+  code: https://github.com/...
+  paper: https://...
+---
+Optional write-up in Markdown.
+```
 
-Images and the CV PDF go in `public/assets/` and are referenced as `/assets/<file>`.
-`public/assets/og.jpg` is the link preview image (1200×630) used by LinkedIn and others.
+- **Has a body** → gets its own page at `/projects/<filename>/`.
+- **Front matter only** → listed, links to its first `links` entry.
 
-### Adding a project
+### Adding a new tab (e.g. a blog)
 
-1. Drop a screenshot in `public/assets/`.
-2. Add an object to the array in `src/content/projects.ts`.
-3. `featured: true` on one project makes it the large card at the top.
+1. Create `src/blog/` with posts and a `blog.11tydata.js` (copy `projects/projects.11tydata.js` as a starting point).
+2. Add a list page, e.g. `src/blog.njk` with `permalink: /blog/`, plus a collection in `eleventy.config.js`.
+3. Add `{ "label": "Blog", "url": "/blog/" }` to `nav` in `site.json`.
 
-## Type
+### Adding a home section
 
-Three faces: Host Grotesk for headings and hero copy, JetBrains Mono for buttons and nav, and DotGothic16 (the pixel face)
-for labels, ledes, card copy, tags and window title bars. The pixel face is rendered without anti-aliasing (`.px` rules in
-`global.css`) so it stays crisp. Cards use the `.win` / `.win__bar` classes for the retro window frame.
+Create `src/_includes/sections/<name>.njk` and add `<name>` to `sections:` in `src/index.njk`.
 
-## Section colours
+## Theme
 
-Each section picks a theme class in its component, e.g. `section section--light section--pink`.
-The palette lives at the top of `src/styles/global.css` (`.section--pink`, `--cream`, `--sage`, `--lavender`, `--sky`).
-Text, borders and cards adapt automatically through the `--s-*` tokens.
-
-## 3D scene
-
-- `src/three/ParticleField.tsx`: the neural particle field behind the hero (custom shaders).
-- `src/three/robots/Stations.tsx`: plays a robot station over every `[data-shape]` element in the page, on a transparent canvas in front of the content.
-  Section headings pick one with `<SectionHead shape="…" />` (`hero`, `arm`, `pickup`, `relay`, `spar`, `retry`).
-  `data-ink` and `data-accent` change its colours.
-- `src/lib/quality.ts`: picks the render tier (bloom + full particle count on desktop, lighter on phones, static frame with reduced motion, nothing without WebGL).
+Colors are CSS variables at the top of `src/assets/css/style.css`. Dark mode follows the system, and the header toggle overrides it (saved in localStorage).
 
 ## Deploy
 
-Pushing to `main` runs `.github/workflows/deploy.yml`, which builds and publishes `dist/`.
-One-time setup: in the repo on GitHub, **Settings → Pages → Build and deployment → Source** must be set to **GitHub Actions**.
+Pushing to `main` builds and deploys via `.github/workflows/deploy.yml`. In the repo settings, set **Pages → Source** to **GitHub Actions**. The path prefix is handled automatically for both `user.github.io/repo` and a custom domain.

@@ -1,0 +1,17 @@
+{
+  "name": "Adam Östberg",
+  "tagline": "MSc Computer Science — Data Science / ML",
+  "description": "Portfolio of Adam Östberg: machine learning and data science projects.",
+  "url": "https://adamostberg.com",
+  "lang": "en",
+  "intro": "Currently doing a master's in computer science, focusing on data science and machine learning.",
+  "nav": [
+    { "label": "Home", "url": "/" },
+    { "label": "Projects", "url": "/projects/" }
+  ],
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/adam-ostberg" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/adam-%C3%B6stberg-63a009263" },
+    { "label": "Email", "url": "mailto:adam@adamostberg.com" }
+  ]
+}

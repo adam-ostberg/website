@@ -1,0 +1,5 @@
+<footer class="site-footer">
+  {#- Home shows contact links in the hero; other pages get them here. #}
+  {%- if page.url != "/" %}{% include "partials/contact.njk" %}{% endif %}
+  <p class="muted">© {{ "now" | year }} {{ site.name }}</p>
+</footer>

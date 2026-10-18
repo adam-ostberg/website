@@ -1,0 +1,14 @@
+---
+layout: layouts/base.njk
+# Home page blocks, rendered in this order from _includes/sections/<name>.njk.
+# Reorder, remove, or add a new partial and list it here.
+sections:
+  - intro
+  - projects
+  - education
+  - experience
+  - skills
+---
+{% for s in sections %}
+{% include "sections/" + s + ".njk" %}
+{% endfor %}

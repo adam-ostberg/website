@@ -1,0 +1,23 @@
+{#- Expects `projects`: a list of collection items.
+    When a project has somewhere to go, the title link is stretched over the whole card (see .card-link in CSS). -#}
+<ul class="rows project-cards">
+  {%- for p in projects %}
+  {%- set href = p | projectHref %}
+  {%- set classes = [("has-thumb" if p.data.image), ("is-link" if href)] | select | join(" ") %}
+  <li{% if classes %} class="{{ classes }}"{% endif %}>
+    {%- if p.data.image %}
+    <div class="thumb">
+      <img src="{{ p.data.image }}" alt="{{ p.data.imageAlt or '' }}" loading="lazy">
+    </div>
+    {%- endif %}
+    <div>
+      <div class="row">
+        {% if href %}<a class="row-title card-link" href="{{ href }}">{{ p.data.title }}</a>{% else %}<span class="row-title">{{ p.data.title }}</span>{% endif %}
+        <span class="row-date">{{ p.date | year }}</span>
+      </div>
+      {%- if p.data.summary %}<p class="row-note">{{ p.data.summary }}</p>{% endif %}
+      {%- if p.data.stack %}<p class="row-meta">{{ p.data.stack | join(" · ") }}</p>{% endif %}
+    </div>
+  </li>
+  {%- endfor %}
+</ul>

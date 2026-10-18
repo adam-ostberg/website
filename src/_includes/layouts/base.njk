@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if title and page.url != "/" %}{{ title }} · {% endif %}{{ site.name }}</title>
+  <meta name="description" content="{{ summary or site.description }}">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    // Apply a saved theme before first paint to avoid a flash.
+    try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  {#- Self-hosted Caveat (name only). Preloaded so the name doesn't flash in the fallback font. #}
+  <link rel="preload" href="/assets/fonts/caveat-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/theme.js" defer></script>
+</head>
+<body>
+  <div class="sheet">
+    {% include "partials/header.njk" %}
+    <main>
+      {{ content | safe }}
+    </main>
+    {% include "partials/footer.njk" %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+/* ---------- Fonts ---------- */
+/* Caveat, self-hosted (OFL, see assets/fonts/Caveat-OFL.txt). Latin subset, weight 600. */
+@font-face {
+  font-family: "Caveat";
+  src: url("../fonts/caveat-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Tokens ---------- */
+/* Two colors, one job each: --accent = clickable, --accent-2 = structure (section headings). */
+:root {
+  --page-bg: #e4e8ec;   /* around the content */
+  --bg: #fcfdfe;        /* the content sheet */
+  --fg: #161b22;
+  --muted: #57606a;
+  --rule: #d5dbe1;
+  --accent: #2c55d4;
+  --accent-2: #4b5d73;
+  --code-bg: #eef1f4;
+  --card-bg: #f1f4f7;
+  --card-hover: #e8ecf1;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px rgb(0 0 0 / 0.05);
+
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --name-font: "Caveat", var(--font);
+  --measure: 46rem;
+  --thumb-w: 11rem;
+
+  /* Vertical rhythm: one gap between sections, one between items. */
+  --section-gap: 4rem;
+  --item-gap: 1.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page-bg: #0b0e12;
+    --bg: #151a21;
+    --fg: #e3e8ee;
+    --muted: #9aa5b1;
+    --rule: #2a313b;
+    --accent: #8aa8ff;
+    --accent-2: #a9b6c6;
+    --code-bg: #1d232c;
+    --card-bg: #1d232c;
+    --card-hover: #252c37;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.35);
+  }
+}
+:root[data-theme="dark"] {
+  --page-bg: #0b0e12;
+  --bg: #151a21;
+  --fg: #e3e8ee;
+  --muted: #9aa5b1;
+  --rule: #2a313b;
+  --accent: #8aa8ff;
+  --accent-2: #a9b6c6;
+  --code-bg: #1d232c;
+  --card-bg: #1d232c;
+  --card-hover: #252c37;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.35);
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 0 1rem;
+  background: var(--page-bg);
+  color: var(--fg);
+  font: 17px/1.65 var(--font);
+}
+
+/* The content sits on a lighter sheet, set off from the page background at the sides
+   and running the full height of the window. */
+.sheet {
+  max-width: calc(var(--measure) + 7rem);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 2.25rem 3.5rem 2.5rem;
+  background: var(--bg);
+  border-inline: 1px solid var(--rule);
+  box-shadow: var(--shadow);
+}
+/* On phones the sheet goes edge to edge, so no width is lost. */
+@media (max-width: 40rem) {
+  body { padding: 0; }
+  .sheet { padding: 1.5rem 1rem 2.5rem; border: 0; box-shadow: none; }
+}
+
+h1, h2, h3 { line-height: 1.2; }
+h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 0.5rem; }
+h2 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-2);
+  margin: 0 0 1.25rem;
+}
+h3 { font-size: 1rem; font-weight: 600; }
+
+p { margin: 0 0 1rem; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+img { max-width: 100%; height: auto; }
+
+code, pre { font-family: var(--mono); font-size: 0.875em; }
+code { background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 3px; }
+pre { background: var(--code-bg); padding: 1rem; overflow-x: auto; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; margin: 0 0 1rem; display: block; overflow-x: auto; }
+th, td { text-align: left; padding: 0.4rem 0.75rem 0.4rem 0; border-bottom: 1px solid var(--rule); }
+
+.muted { color: var(--muted); }
+.small { font-size: 0.875rem; }
+
+/* ---------- Sections: space only, no rules ---------- */
+main > section + section { margin-top: var(--section-gap); }
+main > section > :last-child { margin-bottom: 0; }
+
+/* Page titles (e.g. /projects/) */
+main > h1 { margin-bottom: 2rem; }
+
+/* ---------- Header / footer ---------- */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+}
+.site-name { color: var(--fg); font-family: var(--name-font); font-weight: 600; font-size: 1.5rem; line-height: 1; }
+.site-header nav { display: flex; gap: 1.25rem; align-items: center; }
+.site-header nav a { color: var(--muted); }
+.site-header nav a[aria-current="page"] { color: var(--fg); }
+
+.theme-toggle {
+  display: inline-flex;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  cursor: pointer;
+}
+.theme-toggle:hover { color: var(--fg); }
+.theme-toggle svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Show the moon in light mode (click → dark), the sun in dark mode. Works without JS. */
+.icon-sun { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon-moon { display: none; }
+  :root:not([data-theme="light"]) .icon-sun { display: block; }
+}
+:root[data-theme="dark"] .icon-moon { display: none; }
+:root[data-theme="dark"] .icon-sun { display: block; }
+
+.site-footer { margin-top: var(--section-gap); font-size: 0.875rem; }
+.site-footer .contact { margin-bottom: 0.5rem; }
+.site-footer p { margin: 0; }
+
+/* ---------- Hero ---------- */
+.intro h1 { font-family: var(--name-font); font-size: 3.25rem; font-weight: 600; letter-spacing: 0; line-height: 1; margin-bottom: 0.6rem; }
+.intro .tagline { color: var(--muted); font-size: 1.05rem; margin-bottom: 1.25rem; }
+.contact { margin-top: 1.25rem; font-weight: 500; }
+
+/* ---------- Lists ---------- */
+.inline { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+
+.rows { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--item-gap); }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.row-title { font-weight: 600; }
+.row-date { color: var(--muted); font-size: 0.875rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.row-note { margin: 0.25rem 0 0; }
+.more { margin-top: var(--item-gap); font-size: 0.9rem; }
+
+.row-meta { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.85rem; }
+
+/* Optional project image (front matter `image:`). Size via --thumb-w. */
+.rows > li.has-thumb { display: grid; grid-template-columns: var(--thumb-w) 1fr; gap: 1.25rem; align-items: start; }
+.thumb { display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; background: var(--code-bg); border: 1px solid var(--rule); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 34rem) {
+  .rows > li.has-thumb { grid-template-columns: 1fr; gap: 0.85rem; }
+  .thumb { aspect-ratio: 16 / 9; }
+}
+
+/* Projects sit on soft grey cards; the cards separate them, so the gap between can be tighter. */
+.project-cards { gap: 0.875rem; }
+.project-cards > li { position: relative; background: var(--card-bg); border-radius: 8px; padding: 1.1rem 1.25rem; transition: background-color 0.15s; }
+
+/* Whole card is clickable: the title link's ::after covers the card. */
+.card-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.project-cards > li.is-link:hover { background: var(--card-hover); }
+.project-cards > li.is-link:hover .card-link { text-decoration: underline; }
+.card-link:focus-visible { outline: none; }
+.project-cards > li:has(.card-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 34rem) {
+  .project-cards > li { padding: 0.9rem; }
+}
+
+.skills { display: grid; grid-template-columns: max-content 1fr; gap: 0.9rem 1.5rem; margin: 0; align-items: baseline; }
+.skills dt { color: var(--muted); font-size: 0.9rem; }
+.skills dd { margin: 0; }
+@media (max-width: 30rem) {
+  .skills { grid-template-columns: 1fr; gap: 0.4rem; }
+  .skills dd { margin-bottom: 0.6rem; }
+}
+
+/* ---------- Project page ---------- */
+.back { font-size: 0.9rem; margin-bottom: 1.5rem; }
+.meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+.lede { font-size: 1.1rem; }
+.links { margin-bottom: 2.5rem; font-weight: 500; }
+.prose h2 { margin-top: 2.5rem; }

@@ -1,0 +1,5 @@
+[
+  { "group": "Languages", "items": ["Python", "SQL", "C++", "C#", "JS/TS", "Lua"] },
+  { "group": "ML / DS", "items": ["scikit-learn", "pandas", "NumPy", "matplotlib"] },
+  { "group": "Tools", "items": ["Git", "Docker", "Jupyter", "Claude Code"] }
+]

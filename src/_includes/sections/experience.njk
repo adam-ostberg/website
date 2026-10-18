@@ -1,0 +1,14 @@
+<section>
+  <h2>Experience</h2>
+  <ul class="rows">
+    {%- for e in experience %}
+    <li>
+      <div class="row">
+        <span><span class="row-title">{{ e.role }}</span> <span class="muted">· {{ e.org }}</span></span>
+        <span class="row-date">{{ e.start }}–{{ e.end }}</span>
+      </div>
+      {%- if e.summary %}<p class="row-note">{{ e.summary }}</p>{% endif %}
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
