@@ -20,6 +20,8 @@
   --accent-2: #4b5d73;
   --code-bg: #eef1f4;
   --card-bg: #f1f4f7;
+  --note-bg: #edf4fc;
+  --note-bar: #5aa9f5;
   --card-hover: #e8ecf1;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px rgb(0 0 0 / 0.05);
 
@@ -28,6 +30,8 @@
   --name-font: "Caveat", var(--font);
   --measure: 46rem;
   --thumb-w: 11rem;
+  --side-w: 11rem;
+  --side-gap: 2rem;
 
   /* Vertical rhythm: one gap between sections, one between items. */
   --section-gap: 4rem;
@@ -45,6 +49,8 @@
     --accent-2: #a9b6c6;
     --code-bg: #1d232c;
     --card-bg: #1d232c;
+    --note-bg: #182536;
+    --note-bar: #4a90d9;
     --card-hover: #252c37;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.35);
   }
@@ -59,6 +65,8 @@
   --accent-2: #a9b6c6;
   --code-bg: #1d232c;
   --card-bg: #1d232c;
+  --note-bg: #182536;
+  --note-bar: #4a90d9;
   --card-hover: #252c37;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.35);
 }
@@ -222,4 +230,42 @@ main > h1 { margin-bottom: 2rem; }
 .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
 .lede { font-size: 1.1rem; }
 .links { margin-bottom: 2.5rem; font-weight: 500; }
-.prose h2 { margin-top: 2.5rem; }
+/* Callout, written as {% note %}...{% endnote %} in a project's markdown. */
+.note { margin: 0 0 1rem; padding: 0.9rem 1.1rem; background: var(--note-bg); border-left: 4px solid var(--note-bar); border-radius: 4px; }
+.note > :last-child { margin-bottom: 0; }
+.prose h2 { font-size: 1rem; letter-spacing: 0.08em; margin-top: 2.5rem; }
+
+/* Project switcher (left) and "On this page" outline (right). They sit on the page background
+   either side of the sheet, so they only show when the margins are wide enough to hold them. */
+.side-label { margin: 0 0 0.75rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); }
+.side-nav ul, .toc ul { list-style: none; margin: 0; padding: 0; font-size: 0.875rem; line-height: 1.4; }
+.side-nav a { display: block; }
+.side-nav li + li { margin-top: 0.6rem; }
+.side-nav a[aria-current="page"] { font-weight: 600; }
+
+.toc ul { border-left: 1px solid var(--rule); }
+.toc a { display: block; color: var(--muted); padding: 0.25rem 0 0.25rem 0.85rem; margin-left: -1px; border-left: 2px solid transparent; }
+.toc .toc-h3 a { padding-left: 1.7rem; }
+.toc a:hover { color: var(--fg); text-decoration: none; }
+.toc a[aria-current="location"] { color: var(--accent); border-left-color: var(--accent); }
+
+.prose :is(h2, h3) { scroll-margin-top: 1.5rem; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+.side-nav, .toc { display: none; }
+@media (min-width: 78rem) {
+  .page--wide { display: grid; grid-template-columns: 1fr minmax(0, calc(var(--measure) + 7rem)) 1fr; }
+  .side-nav, .toc {
+    display: block;
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+    width: var(--side-w);
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    margin-top: 7.5rem; /* starts level with the article (sheet padding + header + its margin) */
+  }
+  .side-nav { grid-column: 1; justify-self: end; margin-right: var(--side-gap); }
+  .toc { grid-column: 3; justify-self: start; margin-left: var(--side-gap); }
+  .page--wide .sheet { grid-column: 2; width: 100%; }
+}

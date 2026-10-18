@@ -14,14 +14,23 @@
   <link rel="preload" href="/assets/fonts/caveat-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/css/style.css">
   <script src="/assets/js/theme.js" defer></script>
+  {%- if wide %}
+  <script src="/assets/js/toc.js" defer></script>
+  {%- endif %}
 </head>
 <body>
+  <div class="page{% if wide %} page--wide{% endif %}">
+  {%- if wide %}{% include "partials/project-nav.njk" %}{% endif %}
   <div class="sheet">
     {% include "partials/header.njk" %}
     <main>
       {{ content | safe }}
     </main>
     {% include "partials/footer.njk" %}
+  </div>
+  {%- if wide %}
+  <!--toc-->
+  {%- endif %}
   </div>
 </body>
 </html>
