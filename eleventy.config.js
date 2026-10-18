@@ -4,6 +4,10 @@ export default function (eleventyConfig) {
   // Rewrites absolute URLs when deployed under a sub-path (e.g. user.github.io/repo/).
   eleventyConfig.addPlugin(HtmlBasePlugin);
 
+  // Appended to asset URLs (?v=...) so browsers refetch CSS/JS after each deploy instead of
+  // pairing new HTML with a stale cached stylesheet.
+  eleventyConfig.addGlobalData("assetVersion", () => Date.now().toString(36));
+
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/static": "/" });
 

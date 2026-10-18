@@ -12,10 +12,10 @@
   </script>
   {#- Self-hosted Caveat (name only). Preloaded so the name doesn't flash in the fallback font. #}
   <link rel="preload" href="/assets/fonts/caveat-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <script src="/assets/js/theme.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/style.css?v={{ assetVersion }}">
+  <script src="/assets/js/theme.js?v={{ assetVersion }}" defer></script>
   {%- if wide %}
-  <script src="/assets/js/toc.js" defer></script>
+  <script src="/assets/js/toc.js?v={{ assetVersion }}" defer></script>
   {%- endif %}
 </head>
 <body>
