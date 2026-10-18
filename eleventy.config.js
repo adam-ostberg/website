@@ -18,6 +18,14 @@ export default function (eleventyConfig) {
       .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99) || b.date - a.date)
   );
 
+  // Blog posts, newest first.
+  eleventyConfig.addCollection("posts", (api) =>
+    api.getFilteredByGlob("src/posts/*.md").sort((a, b) => b.date - a.date)
+  );
+
+  eleventyConfig.addFilter("postDate", (date) =>
+    new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
+  );
   eleventyConfig.addFilter("year", (date) => (date === "now" ? new Date() : new Date(date)).getFullYear());
   eleventyConfig.addFilter("featured", (items) => items.filter((p) => p.data.featured));
 

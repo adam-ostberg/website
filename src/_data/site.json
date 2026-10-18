@@ -7,7 +7,8 @@
   "intro": "Currently doing a master's in computer science, focusing on data science and machine learning.",
   "nav": [
     { "label": "Home", "url": "/" },
-    { "label": "Projects", "url": "/projects/" }
+    { "label": "Projects", "url": "/projects/" },
+    { "label": "Blog", "url": "/blog/" }
   ],
   "links": [
     { "label": "GitHub", "url": "https://github.com/adam-ostberg" },

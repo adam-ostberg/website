@@ -1,0 +1,16 @@
+---
+layout: layouts/page.njk
+title: Blog
+permalink: /blog/
+---
+<ul class="rows">
+  {%- for post in collections.posts %}
+  <li>
+    <div class="row">
+      <a class="row-title" href="{{ post.url }}">{{ post.data.title }}</a>
+      <span class="row-date">{{ post.date | postDate }}</span>
+    </div>
+    {%- if post.data.summary %}<p class="row-note">{{ post.data.summary }}</p>{% endif %}
+  </li>
+  {%- endfor %}
+</ul>

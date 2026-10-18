@@ -17,6 +17,7 @@ npm run build   # outputs to _site/
 | Skills                  | `src/_data/skills.json`                |
 | Experience / education  | `src/_data/experience.json`, `education.json` |
 | Projects                | `src/projects/*.md` (one file each)    |
+| Blog posts              | `src/posts/*.md` (one file each)       |
 | Home section order      | `sections:` in `src/index.njk`         |
 | CV and other static files | `src/static/` (copied to site root, e.g. `cv.pdf`) |
 | Figures                 | `src/assets/img/`                      |
@@ -43,11 +44,24 @@ Optional write-up in Markdown.
 - **Has a body** → gets its own page at `/projects/<filename>/`.
 - **Front matter only** → listed, links to its first `links` entry.
 
-### Adding a new tab (e.g. a blog)
+### Blog
 
-1. Create `src/blog/` with posts and a `blog.11tydata.js` (copy `projects/projects.11tydata.js` as a starting point).
-2. Add a list page, e.g. `src/blog.njk` with `permalink: /blog/`, plus a collection in `eleventy.config.js`.
-3. Add `{ "label": "Blog", "url": "/blog/" }` to `nav` in `site.json`.
+Each post is a Markdown file in `src/posts/`, published at `/blog/<filename>/` and listed newest first on `/blog/`.
+
+```yaml
+---
+title: Post title
+date: 2026-10-18
+summary: One sentence, shown in the list and under the title.
+shortTitle: Short name   # optional, used in the left-hand list
+---
+```
+
+Project and blog pages share a layout: the left panel lists the section's pages, the right panel is an outline generated from the `##`/`###` headers. `{% note %}...{% endnote %}` makes a callout.
+
+### Adding another tab
+
+Copy the blog setup: a folder with a `*.11tydata.js` (layout, `sideNav`, `sideNavLabel`, permalink), a collection in `eleventy.config.js`, a list page, and an entry in `nav` in `site.json`.
 
 ### Adding a home section
 

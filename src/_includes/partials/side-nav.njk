@@ -1,0 +1,9 @@
+{#- Sibling pages for the left panel. `sideNav` (a collection name) and `sideNavLabel` come from the section's .11tydata.js. -#}
+<nav class="side-nav" aria-label="{{ sideNavLabel }}">
+  <p class="side-label">{{ sideNavLabel }}</p>
+  <ul>
+    {%- for item in collections[sideNav] %}{% if item.url %}
+    <li><a href="{{ item.url }}"{% if item.url == page.url %} aria-current="page"{% endif %}>{{ item.data.shortTitle or item.data.title }}</a></li>
+    {%- endif %}{% endfor %}
+  </ul>
+</nav>

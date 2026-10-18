@@ -9,6 +9,8 @@ function hasBody(inputPath) {
 
 export default {
   layout: "layouts/project.njk",
+  sideNav: "projects",
+  sideNavLabel: "Projects",
   eleventyComputed: {
     permalink: (data) =>
       hasBody(data.page.inputPath) ? `/projects/${data.page.fileSlug}/` : false,
