@@ -2,13 +2,17 @@
   {
     "degree": "MSc Computer Science — Data Science (ML)",
     "org": "KTH",
+    "logo": "/assets/img/KTH_logo_RGB_vit.svg",
+    "logoBg": "#004791",
     "start": "2026",
     "end": "present",
-    "summary": "Data Science track with a machine learning specialisation."
+    "summary": "Data Science track with a machine learning specialization."
   },
   {
     "degree": "BSc Media Technology",
     "org": "KTH",
+    "logo": "/assets/img/KTH_logo_RGB_vit.svg",
+    "logoBg": "#004791",
     "start": "2023",
     "end": "2026",
     "summary": "Programming, math and interaction design, with a growing focus on data and software that led me into ML."

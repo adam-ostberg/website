@@ -2,12 +2,17 @@
   <h2>Education</h2>
   <ul class="rows">
     {%- for e in education %}
-    <li>
-      <div class="row">
-        <span><span class="row-title">{{ e.degree }}</span> <span class="muted">· {{ e.org }}</span></span>
-        <span class="row-date">{{ e.start }}–{{ e.end }}</span>
+    <li{% if e.logo %} class="has-logo"{% endif %}>
+      {%- if e.logo %}
+      <span class="org-logo" style="background: {{ e.logoBg }}"><img src="{{ e.logo }}" alt="" width="448" height="502"></span>
+      {%- endif %}
+      <div>
+        <div class="row">
+          <span><span class="row-title">{{ e.degree }}</span> <span class="muted">· {{ e.org }}</span></span>
+          <span class="row-date">{{ e.start }}–{{ e.end }}</span>
+        </div>
+        {%- if e.summary %}<p class="row-note">{{ e.summary }}</p>{% endif %}
       </div>
-      {%- if e.summary %}<p class="row-note">{{ e.summary }}</p>{% endif %}
     </li>
     {%- endfor %}
   </ul>

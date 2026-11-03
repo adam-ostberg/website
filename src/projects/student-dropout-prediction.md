@@ -4,7 +4,7 @@ date: 2025-05-19
 summary: Trained five classifiers to predict whether a student graduates or drops out, then built a small app so we could ask it about ourselves.
 stack: [Python, scikit-learn, XGBoost, pandas]
 featured: true
-image: /assets/img/DropoutPredictionClustering.png   # optional thumbnail in lists
+image: /assets/img/DropoutPredictionClustering.webp   # optional thumbnail in lists
 imageAlt: Hierarchical clustering of the student dataset in PCA space.
 links:
   analysis: https://colab.research.google.com/drive/1IGcsx_nBA0Jz5tbWTJ0sau8eOPYv9961?usp=sharing
@@ -25,7 +25,7 @@ The data covers 4,424 Portuguese undergraduates with 36 features: grades, demogr
 - **Picking features we could actually answer.** `SelectKBest` (chi²) gave us ten features, and we cut them by hand to six that a Swedish student could fill in honestly: marital status, application order, previous qualification, father's occupation, debtor status and gender. Nationality, scholarships and tuition fees didn't map onto Sweden, so they went.
 - **Comparing models.** kNN, Random Forest, Naive Bayes, logistic regression and XGBoost. We tuned XGBoost with `GridSearchCV`.
 
-![Hierarchical clustering on the PCA-reduced data](/assets/img/DropoutPredictionClustering.png)
+{% image "/assets/img/DropoutPredictionClustering.webp", "Hierarchical clustering on the PCA-reduced data", "60%" %}
 
 ## Results
 
