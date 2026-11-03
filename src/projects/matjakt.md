@@ -4,7 +4,7 @@ date: 2026-06-01
 summary: Built Matjakt, which scrapes prices from around 500 Swedish grocery stores and works out the cheapest way to buy your whole shopping list.
 stack: [Python, Scrapy, Playwright, PostgreSQL, React, TypeScript]
 featured: true
-image: /assets/img/Matjakt.png   # optional thumbnail in lists
+image: /assets/img/Matjakt.webp   # optional thumbnail in lists
 imageAlt: An image of the front page of Matjakt
 links:
   demo: https://matjakt.org/
@@ -25,7 +25,7 @@ Every store has its own prices, so each of those 57,000 products can have hundre
 - **Ingestion.** Raw results are written to NDJSON files, bulk-loaded into Postgres (Supabase) and merged into normalised tables. Every price that differs from the last run goes into an append-only price-history table. If a run fails halfway, we re-run the load from the files instead of scraping again.
 - **Optimising the basket.** For each item, the site picks the cheapest store within your radius, among stores you choose, or anywhere in Sweden. It then draws the route on a map (Leaflet + OSRM) and uses live fuel prices to estimate what the drive will cost.
 
-![The Matjakt checkout view, with an optimised basket and a route on the map](/assets/img/MatjaktCheckout.png)
+![The Matjakt checkout view, with an optimised basket and a route on the map](/assets/img/MatjaktCheckout.webp)
 
 ## What happened
 

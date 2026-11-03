@@ -1,0 +1,13 @@
+---
+layout: layouts/base.njk
+wide: true
+---
+<article class="project">
+  <p class="back"><a href="/blog/">← Blog</a></p>
+  <h1>{{ title }}</h1>
+  <p class="meta">{{ page.date | postDate }}</p>
+  {% if summary %}<p class="lede">{{ summary }}</p>{% endif %}
+  <div class="prose">
+    {{ content | safe }}
+  </div>
+</article>

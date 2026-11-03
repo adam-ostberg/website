@@ -28,7 +28,7 @@
   --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --name-font: "Caveat", var(--font);
-  --measure: 46rem;
+  --measure: 42rem;
   --thumb-w: 11rem;
   --side-w: 11rem;
   --side-gap: 2rem;
@@ -74,7 +74,8 @@
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+/* Reserve the scrollbar's space so the sheet doesn't shift between short and long pages. */
+html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
 
 body {
   margin: 0;
@@ -192,6 +193,11 @@ main > h1 { margin-bottom: 2rem; }
 .row-note { margin: 0.25rem 0 0; }
 .more { margin-top: var(--item-gap); font-size: 0.9rem; }
 
+/* Optional organisation logo (education data `logo` + `logoBg`): a square tile at the left. */
+.rows > li.has-logo { display: grid; grid-template-columns: 3.25rem 1fr; gap: 1rem; align-items: start; }
+.org-logo { display: flex; align-items: center; justify-content: center; width: 3.25rem; aspect-ratio: 1; border-radius: 4px; }
+.org-logo img { height: 66%; width: auto; display: block; }
+
 .row-meta { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.85rem; }
 
 /* Optional project image (front matter `image:`). Size via --thumb-w. */
@@ -233,6 +239,12 @@ main > h1 { margin-bottom: 2rem; }
 /* Callout, written as {% note %}...{% endnote %} in a project's markdown. */
 .note { margin: 0 0 1rem; padding: 0.9rem 1.1rem; background: var(--note-bg); border-left: 4px solid var(--note-bar); border-radius: 4px; }
 .note > :last-child { margin-bottom: 0; }
+/* Sized image, written as {% image src, alt, width, caption %}. Goes full width on phones,
+   where a narrow image would be too small to read. */
+.figure { width: var(--w, auto); max-width: 100%; margin: 1.5rem auto; }
+.figure img { display: block; width: 100%; }
+.figure figcaption { margin-top: 0.5rem; color: var(--muted); font-size: 0.9rem; font-style: italic; text-align: center; }
+@media (max-width: 34rem) { .figure { width: auto; } }
 .prose h2 { font-size: 1rem; letter-spacing: 0.08em; margin-top: 2.5rem; }
 
 /* Project switcher (left) and "On this page" outline (right). They sit on the page background

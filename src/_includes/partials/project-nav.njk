@@ -1,8 +1,0 @@
-<nav class="side-nav" aria-label="Projects">
-  <p class="side-label">Projects</p>
-  <ul>
-    {%- for p in collections.projects %}{% if p.url %}
-    <li><a href="{{ p.url }}"{% if p.url == page.url %} aria-current="page"{% endif %}>{{ p.data.shortTitle or p.data.title }}</a></li>
-    {%- endif %}{% endfor %}
-  </ul>
-</nav>

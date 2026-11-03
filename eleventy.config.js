@@ -1,4 +1,5 @@
 import { HtmlBasePlugin } from "@11ty/eleventy";
+import site from "./src/_data/site.json" with { type: "json" };
 
 export default function (eleventyConfig) {
   // Rewrites absolute URLs when deployed under a sub-path (e.g. user.github.io/repo/).
@@ -18,12 +19,30 @@ export default function (eleventyConfig) {
       .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99) || b.date - a.date)
   );
 
+  // Blog posts, newest first.
+  eleventyConfig.addCollection("posts", (api) =>
+    api.getFilteredByGlob("src/posts/*.md").sort((a, b) => b.date - a.date)
+  );
+
+  eleventyConfig.addFilter("postDate", (date) =>
+    new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
+  );
   eleventyConfig.addFilter("year", (date) => (date === "now" ? new Date() : new Date(date)).getFullYear());
   eleventyConfig.addFilter("featured", (items) => items.filter((p) => p.data.featured));
 
   // {% note %}markdown{% endnote %}: a highlighted callout. The content is left as markdown
   // and parsed by the markdown pass, since the blank lines let it through the HTML block.
   eleventyConfig.addPairedShortcode("note", (content) => `\n<div class="note">\n\n${content.trim()}\n\n</div>\n`);
+
+  // {% image "/assets/img/x.webp", "Alt text", "60%", "Optional caption" %}: an image at a set width,
+  // centred. Width is any CSS length ("60%", "20rem"); a bare number means pixels. Plain ![]() stays full width.
+  const escape = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  eleventyConfig.addShortcode("image", (src, alt = "", width, caption) => {
+    const w = width == null || width === "" ? "" : /^\d+$/.test(String(width)) ? `${width}px` : width;
+    const style = w ? ` style="--w: ${escape(w)}"` : "";
+    const cap = caption ? `<figcaption>${escape(caption)}</figcaption>` : "";
+    return `\n<figure class="figure"${style}><img src="${escape(src)}" alt="${escape(alt)}" loading="lazy">${cap}</figure>\n`;
+  });
 
   // "On this page" outline. The layout drops a <!--toc--> marker; this gives every ##/### in
   // the article an id and swaps the marker for a nav linking to them, so it always matches the content.
@@ -53,6 +72,18 @@ export default function (eleventyConfig) {
       ? `<nav class="toc" aria-label="On this page"><p class="side-label">On this page</p><ul>\n${items}\n</ul></nav>`
       : "";
     return (html.slice(0, start) + body + html.slice(end)).replace("<!--toc-->", () => toc);
+  });
+
+  // External links (http/https, not our own domain) open in a new tab. Internal links, #anchors
+  // and mailto: are left alone. Opt out per link with target="_self".
+  eleventyConfig.addTransform("external-links", function (html) {
+    if (!this.page.outputPath?.endsWith(".html")) return html;
+    const own = new URL(site.url).hostname;
+    return html.replace(/<a\s[^>]*>/g, (tag) => {
+      const href = tag.match(/\shref="(https?:\/\/[^"]*)"/)?.[1];
+      if (!href || /\starget=/.test(tag) || new URL(href).hostname === own) return tag;
+      return tag.replace(/>$/, ' target="_blank" rel="noopener">');
+    });
   });
 
   // Own page if it has one, otherwise the first external link (code, paper, ...).
