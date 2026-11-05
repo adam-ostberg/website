@@ -1,5 +1,5 @@
 <ul class="inline contact">
   {%- for link in site.links %}
-  <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+  <li><a href="{{ link.url }}"{% if link.newTab %} target="_blank" rel="noopener"{% endif %}>{{ link.label }}</a></li>
   {%- endfor %}
 </ul>
