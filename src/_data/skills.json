@@ -1,5 +1,7 @@
 [
-  { "group": "Languages", "items": ["Python", "SQL", "C++", "C#", "JS/TS", "Lua"] },
-  { "group": "ML / DS", "items": ["scikit-learn", "pandas", "NumPy", "matplotlib"] },
-  { "group": "Tools", "items": ["Git", "Docker", "Jupyter", "Claude Code"] }
+  { "group": "Programming", "items": ["Python", "SQL", "C++", "C#", "JavaScript/TypeScript"] },
+  { "group": "ML / data", "items": ["scikit-learn", "XGBoost", "pandas", "NumPy", "matplotlib"] },
+  { "group": "Web", "items": ["React", "Next.js", "Three.js", "Supabase", "Firebase"] },
+  { "group": "Tools", "items": ["Git", "Docker", "Jupyter", "Scrapy", "Unity", "Claude Code"] },
+  { "group": "Languages", "items": ["Swedish", "English"] }
 ]
