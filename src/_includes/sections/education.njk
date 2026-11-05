@@ -1,6 +1,6 @@
 <section>
   <h2>Education</h2>
-  <ul class="rows">
+  <ul class="rows entries">
     {%- for e in education %}
     <li{% if e.logo %} class="has-logo"{% endif %}>
       {%- if e.logo %}
@@ -8,7 +8,7 @@
       {%- endif %}
       <div>
         <div class="row">
-          <span><span class="row-title">{{ e.degree }}</span> <span class="muted">· {{ e.org }}</span></span>
+          <span><span class="row-title">{{ e.degree }}</span><span class="row-org">{{ e.org }}</span></span>
           <span class="row-date">{{ e.start }}–{{ e.end }}</span>
         </div>
         {%- if e.summary %}<p class="row-note">{{ e.summary }}</p>{% endif %}

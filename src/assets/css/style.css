@@ -193,6 +193,13 @@ main > h1 { margin-bottom: 2rem; }
 .row-note { margin: 0.25rem 0 0; }
 .more { margin-top: var(--item-gap); font-size: 0.9rem; }
 
+/* Education / experience / leadership: title + date, organisation underneath, then a softer
+   description, so each entry reads title → where → what. */
+.entries { gap: 2.25rem; }
+.entries .row { line-height: 1.35; }
+.row-org { display: block; margin-top: 0.15rem; color: var(--muted); font-size: 0.9rem; }
+.entries .row-note { margin-top: 0.45rem; color: var(--muted); font-size: 0.95rem; line-height: 1.55; }
+
 /* Optional organisation logo (education data `logo` + `logoBg`): a square tile at the left. */
 .rows > li.has-logo { display: grid; grid-template-columns: 3.25rem 1fr; gap: 1rem; align-items: start; }
 .org-logo { display: flex; align-items: center; justify-content: center; width: 3.25rem; aspect-ratio: 1; border-radius: 4px; }
