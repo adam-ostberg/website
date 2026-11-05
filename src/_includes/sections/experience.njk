@@ -7,7 +7,11 @@
         <span><span class="row-title">{{ e.role }}</span><span class="row-org">{{ e.org }}</span></span>
         <span class="row-date">{{ e.start }}–{{ e.end }}</span>
       </div>
-      {%- if e.summary %}<p class="row-note">{{ e.summary }}</p>{% endif %}
+      {%- if e.bullets %}
+      <ul class="row-bullets">
+        {%- for b in e.bullets %}<li>{{ b }}</li>{% endfor %}
+      </ul>
+      {%- endif %}
     </li>
     {%- endfor %}
   </ul>
