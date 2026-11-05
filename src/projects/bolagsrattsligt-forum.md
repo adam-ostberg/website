@@ -1,24 +1,22 @@
 ---
 title: Bolagsrättsligt Forum
-date: 2021-03-09   # TODO: when you started (sorts the list)
+date: 2021-03-09
 end: 2026-01-01
-summary: Designed, built and maintain the website and sign-up form for an annual two-day company law course.
+summary: Designed, built and maintained the website and sign-up form for an annual two-day course in company and securities law.
 stack: [HTML, CSS, JavaScript, Firebase]
-featured: false
+featured: true
 image: /assets/img/BolagsrattsligtForum.jpg
 imageAlt: A screenshot of bolagsrattsligtforum.se
 links:
   site: https://www.bolagsrattsligtforum.se/
 ---
 {% note %}
-Client work, built and run on my own since 2021. The site is in Swedish.
+Client work, built and run on my own for five years, 2021–2026. The site is in Swedish.
 {% endnote %}
 
 ## What it is
 
-Bolagsrättsdagarna is a two-day course in Swedish company law, held every September at a conference hotel outside Stockholm. The teachers are lawyers who specialise in the field, several of whom also teach at Stockholm University. The website is where people find information about the course and sign up for it.
-
-The current version is a full redesign of the site. <!-- TODO: add the year, plus what changed and why (new look, new form, easier to update?). -->
+Bolagsrättsligt Forum runs Bolagsrättsdagarna, a two-day continuing-education course in Swedish company and securities law, held every September at a conference hotel outside Stockholm. The teachers are lawyers who specialise in the field, several of whom also teach at Stockholm University. The website is where people find information about the course and sign up for it.
 
 ## How it works
 
@@ -29,4 +27,10 @@ The current version is a full redesign of the site. <!-- TODO: add the year, plu
 
 ## Running it every year
 
-Before each course I update the dates, programme, prices and hotel rates, and I manage the sign-ups in the database. <!-- TODO: say how the organisers get the sign-ups (export, email, admin view?) in place of "manage the sign-ups in the database". -->
+Before each course I update the dates, programme, prices and hotel rates. Over the years the organisers have received sign-ups in two ways: as an automated email for each new registration, and through an admin dashboard in Firebase where they can see every registration in one place.
+
+## What I learned
+
+- **Production is different from coursework.** People book their course place and hotel room through the form, so it has to work every time, not just pass a demo.
+- **Personal data comes with obligations.** Collecting invoice details and dietary needs meant writing a privacy policy and terms, and thinking about who can read the data.
+- **Simple is easier to keep running.** No framework and no server has meant five years with almost nothing to upgrade or patch.
