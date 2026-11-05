@@ -13,7 +13,7 @@
   "links": [
     { "label": "GitHub", "url": "https://github.com/adam-ostberg" },
     { "label": "LinkedIn", "url": "https://www.linkedin.com/in/adam-%C3%B6stberg-63a009263" },
-    { "label": "adam@adamostberg.com", "url": "mailto:adam@adamostberg.com" },
-    { "label": "CV", "url": "/Adam_Ostberg_CV_2026.pdf", "newTab": true }
+    { "label": "CV", "url": "/Adam_Ostberg_CV_2026.pdf", "newTab": true },
+    { "label": "adam@adamostberg.com", "url": "mailto:adam@adamostberg.com" }
   ]
 }
