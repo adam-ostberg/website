@@ -13,7 +13,7 @@
     <div>
       <div class="row">
         {% if href %}<a class="row-title card-link" href="{{ href }}">{{ p.data.title }}</a>{% else %}<span class="row-title">{{ p.data.title }}</span>{% endif %}
-        <span class="row-date">{{ p.date | year }}</span>
+        <span class="row-date">{{ p.date | yearRange(p.data.end) }}</span>
       </div>
       {%- if p.data.summary %}<p class="row-note">{{ p.data.summary }}</p>{% endif %}
       {%- if p.data.stack %}<p class="row-meta">{{ p.data.stack | join(" · ") }}</p>{% endif %}

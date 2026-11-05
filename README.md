@@ -27,7 +27,8 @@ npm run build   # outputs to _site/
 ```yaml
 ---
 title: Project name
-date: 2026-09-01          # sorts newest first; year is shown
+date: 2026-09-01          # start; sorts newest first; year is shown
+end: present              # optional: a year, a date or "present" → shows "2026–present"
 summary: One sentence.
 stack: [Python, PyTorch]
 featured: true            # show on the home page

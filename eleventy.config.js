@@ -28,6 +28,16 @@ export default function (eleventyConfig) {
     new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
   );
   eleventyConfig.addFilter("year", (date) => (date === "now" ? new Date() : new Date(date)).getFullYear());
+
+  // Shown year(s) for a project: `date` alone → "2025"; with `end` → "2021–2024" or "2021–present".
+  // `end` may be a year (2024), a date (2024-05-01) or "present"; a range within one year shows once.
+  eleventyConfig.addFilter("yearRange", (date, end) => {
+    const start = new Date(date).getUTCFullYear();
+    if (end === undefined || end === null || end === "") return String(start);
+    if (String(end).toLowerCase() === "present") return `${start}–present`;
+    const last = typeof end === "number" ? end : new Date(end).getUTCFullYear();
+    return last === start ? String(start) : `${start}–${last}`;
+  });
   eleventyConfig.addFilter("featured", (items) => items.filter((p) => p.data.featured));
 
   // {% note %}markdown{% endnote %}: a highlighted callout. The content is left as markdown

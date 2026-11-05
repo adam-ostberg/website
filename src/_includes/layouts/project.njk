@@ -5,7 +5,7 @@ wide: true
 <article class="project">
   <p class="back"><a href="/projects/">← Projects</a></p>
   <h1>{{ title }}</h1>
-  <p class="meta">{{ page.date | year }}{% if stack %} · {{ stack | join(" · ") }}{% endif %}</p>
+  <p class="meta">{{ page.date | yearRange(end) }}{% if stack %} · {{ stack | join(" · ") }}{% endif %}</p>
   {% if summary %}<p class="lede">{{ summary }}</p>{% endif %}
   {% include "partials/project-links.njk" %}
   <div class="prose">
