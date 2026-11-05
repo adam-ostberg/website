@@ -1,16 +1,32 @@
 [
   {
     "role": "Data Annotation Intern",
-    "org": "Stealth Startup",
+    "org": "Stealth AI startup",
     "start": "Aug 2026",
     "end": "present",
-    "summary": "I currently work with data annotation for training advanced ML models."
+    "bullets": [
+      "Annotate video data used to train real-time machine learning models.",
+      "Review other annotators' work for quality and consistency against labelling guidelines.",
+      "Help evaluate model performance, feeding results back into data and annotation priorities."
+    ]
+  },
+  {
+    "role": "Web Developer",
+    "org": "Bolagsrättsligt Forum",
+    "start": "2021",
+    "end": "2026",
+    "bullets": [
+      "Built the company's website (bolagsrattsligtforum.se) from the ground up for its continuing-education courses in company and securities law, including course pages and registration.",
+      "Maintained and updated the site for five years as courses and offerings changed."
+    ]
   },
   {
     "role": "B2B Prospecting",
-    "org": "Prebona AB",
+    "org": "Prebona AB, Lisbon",
     "start": "Jun 2023",
     "end": "Aug 2023",
-    "summary": "I worked one summer in Lisbon with B2B prospecting and cold emailing"
+    "bullets": [
+      "Researched and contacted potential business clients through targeted cold-email outreach."
+    ]
   }
 ]
