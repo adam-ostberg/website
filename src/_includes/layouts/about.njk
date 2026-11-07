@@ -1,0 +1,13 @@
+---
+layout: layouts/base.njk
+---
+<article class="about">
+  <h1>{{ title }}</h1>
+  {#- The portrait is a grid cell beside the opening section (see .portrait in style.css); above the text on phones. #}
+  <div class="prose">
+    {%- if photo %}
+    <img class="portrait" src="{{ photo }}" alt="{{ photoAlt }}" width="800" height="1000">
+    {%- endif %}
+    {{ content | safe }}
+  </div>
+</article>

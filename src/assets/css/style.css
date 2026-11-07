@@ -158,6 +158,12 @@ main > h1 { margin-bottom: 2rem; }
 .site-header nav { display: flex; gap: 1.25rem; align-items: center; }
 .site-header nav a { color: var(--muted); }
 .site-header nav a[aria-current="page"] { color: var(--fg); }
+/* Four tabs + the toggle must fit next to the name on a 375px phone. */
+@media (max-width: 30rem) {
+  .site-header { gap: 0.75rem; }
+  .site-name { white-space: nowrap; font-size: 1.3rem; }
+  .site-header nav { gap: 0.75rem; font-size: 0.9rem; }
+}
 
 .theme-toggle {
   display: inline-flex;
@@ -295,4 +301,23 @@ main > h1 { margin-bottom: 2rem; }
   .side-nav { grid-column: 1; justify-self: end; margin-right: var(--side-gap); }
   .toc { grid-column: 3; justify-self: start; margin-left: var(--side-gap); }
   .page--wide .sheet { grid-column: 2; width: 100%; }
+}
+
+/* ---------- About page ---------- */
+/* The portrait is the first cell of a two-column grid on .prose and spans the opening
+   section (heading + first two paragraphs), so its top and bottom line up with the text at
+   any width. Everything else spans both columns. Adjust the row span if the opening
+   section changes length. On phones it sits above the text. */
+.about .prose { display: grid; grid-template-columns: 15rem 1fr; column-gap: 2rem; }
+.about .prose > * { grid-column: 1 / -1; }
+.about .prose > h2:first-of-type,
+.about .prose > p:nth-of-type(-n+2) { grid-column: 2; }
+.about .prose > h2:first-of-type { margin-top: 0; }
+/* object-fit crops the original so the strangers at its edges mostly drop out. */
+/* contain: size keeps the image's own height out of the row sizing; the text sets the height. */
+.about .prose > .portrait { grid-column: 1; grid-row: 1 / span 3; align-self: stretch; width: 100%; contain: size; object-fit: cover; object-position: 50% 0; margin-bottom: 1rem; border-radius: 8px; border: 1px solid var(--rule); background: var(--code-bg); }
+@media (max-width: 34rem) {
+  .about .prose { display: block; }
+  .about .prose > .portrait { display: block; contain: none; width: 100%; max-width: 12rem; height: auto; aspect-ratio: 2 / 3; margin: 0 0 1.5rem; }
+  .about .prose > h2:first-of-type { margin-top: 1.5rem; }
 }
