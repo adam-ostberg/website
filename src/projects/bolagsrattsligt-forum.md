@@ -4,7 +4,7 @@ date: 2021-03-09
 end: 2026-01-01
 summary: Designed, built and maintained the website and sign-up form for an annual two-day course in company and securities law.
 stack: [HTML, CSS, JavaScript, Firebase]
-featured: true
+featured: false
 image: /assets/img/BolagsrattsligtForum.jpg
 imageAlt: A screenshot of bolagsrattsligtforum.se
 links:
