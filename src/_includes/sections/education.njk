@@ -12,6 +12,7 @@
           <span class="row-date">{{ e.start }}–{{ e.end }}</span>
         </div>
         {%- if e.summary %}<p class="row-note">{{ e.summary }}</p>{% endif %}
+        {%- if e.coursework %}<p class="row-note">Coursework so far: {{ e.coursework | join(", ") }}</p>{% endif %}
       </div>
     </li>
     {%- endfor %}

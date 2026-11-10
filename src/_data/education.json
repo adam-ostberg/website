@@ -6,7 +6,8 @@
     "logoBg": "#004791",
     "start": "2026",
     "end": "2028",
-    "summary": "Data Science track with a machine learning specialization."
+    "summary": "Data Science track with a machine learning specialization.",
+    "coursework": ["Artificial Intelligence", "Advanced Algorithms", "Computer Security", "Internet Protocols and Principles"]
   },
   {
     "degree": "BSc Media Technology",
