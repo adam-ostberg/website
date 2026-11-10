@@ -12,7 +12,7 @@ links:
   scraper: https://github.com/adam-ostberg/matjakt-scraper
 ---
 {% note %}
-My bachelor's thesis at KTH, *Digitalization and Visualization of Grocery Prices for Optimized Purchasing Decisions*, built with three classmates. **4.3 million prices | 57,000 products | ~500 stores**
+My bachelor's thesis at KTH, *Digitalization and Visualization of Grocery Prices for Optimized Purchasing Decisions*, built with three classmates. I built the scraping and ingestion pipeline, and parts of the website. **4.3 million prices | 57,000 products | ~500 stores**
 {% endnote %}
 
 ## Why this one
