@@ -4,7 +4,7 @@
   "description": "MSc Computer Science student at KTH, focusing on machine learning and data science. Projects, CV and contact.",
   "url": "https://adamostberg.com",
   "lang": "en",
-  "intro": "I'm focusing on data science and machine learning, with a broad software background. I'm looking for a summer 2027 tech internship. If you have something interesting, please email me.",
+  "intro": "I'm a fourth-year engineering student at KTH, specialising in machine learning and AI. I've built a pipeline that collects 4.3 million grocery prices, and a product matcher that reaches 0.89 precision on data that had no labels to start from. I'm looking for an ML or software engineering internship for summer 2027. If you have something interesting, please email me.",
   "nav": [
     { "label": "Home", "url": "/" },
     { "label": "Projects", "url": "/projects/" },
