@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { HtmlBasePlugin } from "@11ty/eleventy";
 import site from "./src/_data/site.json" with { type: "json" };
 
@@ -94,6 +95,20 @@ export default function (eleventyConfig) {
       if (!href || /\starget=/.test(tag) || new URL(href).hostname === own) return tag;
       return tag.replace(/>$/, ' target="_blank" rel="noopener">');
     });
+  });
+
+  // Readable labels for a project's `links` keys; unknown keys are shown capitalised.
+  const linkLabels = { code: "Code on GitHub", demo: "Live demo", site: "Visit site", website: "Website code", scraper: "Scraper code", analysis: "Analysis notebook", models: "Models notebook", paper: "Paper" };
+  eleventyConfig.addFilter("linkLabel", (key) => linkLabels[key] ?? key.charAt(0).toUpperCase() + key.slice(1));
+
+  // Link-preview image for a page: its own `image` if it has one, else the shared card.
+  // Preview crawlers don't reliably read WebP, so a WebP image needs a JPG copy in assets/img/og/.
+  eleventyConfig.addFilter("ogImage", (image) => {
+    const fallback = "/assets/img/og-card.png";
+    if (!image) return fallback;
+    if (!image.endsWith(".webp")) return image;
+    const jpg = image.replace(/\/([^/]+)\.webp$/, "/og/$1.jpg");
+    return existsSync("src" + jpg) ? jpg : fallback;
   });
 
   // Own page if it has one, otherwise the first external link (code, paper, ...).

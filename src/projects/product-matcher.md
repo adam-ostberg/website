@@ -2,10 +2,11 @@
 title: Cross-store product matching with XGBoost
 date: 2026-11-03
 summary: Matched identical products across Sweden's two biggest grocery chains with a small ML pipeline, then compared 7,659 prices. Coop wins, mostly.
-stack: [Python, pandas, scikit-learn, XGBoost, React, Vite]
+stack: [Python, scikit-learn, XGBoost]
 featured: true
-image: /assets/img/ProductMatcherLabeler.jpg
-imageAlt: The labeling tool, showing a Coop can of Mutti tomatoes next to ten ICA candidates
+image: /assets/img/ProductMatcherPriceDifferenceThumb.png   # cropped for the card
+previewImage: /assets/img/ProductMatcherPriceDifference.png   # full chart for link previews
+imageAlt: A chart of the price difference between ICA and Coop for 7,659 identical products
 links:
   code: https://github.com/adam-ostberg/product-matcher
 ---

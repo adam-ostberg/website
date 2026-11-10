@@ -13,16 +13,20 @@
   {#- Favicon: "AÖ" in Caveat. favicon.ico holds 16/32/48 px; iOS uses the apple-touch-icon. #}
   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  {#- Link previews (LinkedIn, Slack, iMessage...). One shared 1200x630 card for every page. #}
+  {#- Link previews (LinkedIn, Slack, iMessage...). A project uses its own image; other pages share a 1200x630 card. #}
   <meta property="og:type" content="{{ 'website' if page.url == '/' else 'article' }}">
   <meta property="og:site_name" content="{{ site.name }}">
   <meta property="og:title" content="{{ pageTitle }}">
   <meta property="og:description" content="{{ pageDescription }}">
   <meta property="og:url" content="{{ pageUrl }}">
-  <meta property="og:image" content="{{ site.url }}/assets/img/og-card.png">
+  {%- set ogImage = (previewImage or image) | ogImage %}
+  {%- set ownImage = ogImage != "/assets/img/og-card.png" %}
+  <meta property="og:image" content="{{ site.url }}{{ ogImage }}">
+  {%- if not ownImage %}
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="{{ site.name }}, {{ site.tagline }}">
+  {%- endif %}
+  <meta property="og:image:alt" content="{{ (imageAlt if ownImage and imageAlt) or (site.name + ', ' + site.tagline) }}">
   <meta name="twitter:card" content="summary_large_image">
   <script>
     // Apply a saved theme before first paint to avoid a flash.

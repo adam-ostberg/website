@@ -1,16 +1,18 @@
 ---
-title: Digitalization and Visualization of Grocery Prices for Optimized Purchasing Decisions
+title: "Matjakt: the cheapest basket across ~500 grocery stores"
 date: 2026-06-01
 summary: Built Matjakt, which scrapes prices from around 500 Swedish grocery stores and works out the cheapest way to buy your whole shopping list.
-stack: [Python, Scrapy, Playwright, PostgreSQL, React, TypeScript]
+stack: [Python, Scrapy, PostgreSQL, React]
 featured: true
 image: /assets/img/Matjakt.webp   # optional thumbnail in lists
 imageAlt: An image of the front page of Matjakt
 links:
   demo: https://matjakt.org/
+  website: https://github.com/adam-ostberg/matjakt
+  scraper: https://github.com/adam-ostberg/matjakt-scraper
 ---
 {% note %}
-My bachelor's thesis at KTH, built with three classmates. **4.3 million prices | 57,000 products | ~500 stores**
+My bachelor's thesis at KTH, *Digitalization and Visualization of Grocery Prices for Optimized Purchasing Decisions*, built with three classmates. **4.3 million prices | 57,000 products | ~500 stores**
 {% endnote %}
 
 ## Why this one

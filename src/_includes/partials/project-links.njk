@@ -2,7 +2,7 @@
 {%- if links %}
 <ul class="inline links">
   {%- for label, url in links %}
-  <li><a href="{{ url }}">{{ label }}</a></li>
+  <li><a href="{{ url }}">{{ label | linkLabel }}</a></li>
   {%- endfor %}
 </ul>
 {%- endif %}

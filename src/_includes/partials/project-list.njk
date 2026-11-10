@@ -17,6 +17,13 @@
       </div>
       {%- if p.data.summary %}<p class="row-note">{{ p.data.summary }}</p>{% endif %}
       {%- if p.data.stack %}<p class="row-meta">{{ p.data.stack | join(" · ") }}</p>{% endif %}
+      {%- if p.data.links %}
+      <ul class="inline card-links">
+        {%- for label, url in p.data.links %}
+        <li><a href="{{ url }}">{{ label | linkLabel }}</a></li>
+        {%- endfor %}
+      </ul>
+      {%- endif %}
     </div>
   </li>
   {%- endfor %}

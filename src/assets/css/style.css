@@ -238,6 +238,8 @@ main > h1 { margin-bottom: 2rem; }
 .card-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
 .project-cards > li.is-link:hover { background: var(--card-hover); }
 .project-cards > li.is-link:hover .card-link { text-decoration: underline; }
+/* Extra links on a card sit above the stretched title link so they stay clickable. */
+.card-links { position: relative; z-index: 1; width: fit-content; margin-top: 0.6rem; font-size: 0.9rem; font-weight: 500; }
 .card-link:focus-visible { outline: none; }
 .project-cards > li:has(.card-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 34rem) {

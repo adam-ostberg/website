@@ -2,7 +2,7 @@
 title: Student dropout prediction
 date: 2025-05-19
 summary: Trained five classifiers to predict whether a student graduates or drops out, then built a small app so we could ask it about ourselves.
-stack: [Python, scikit-learn, XGBoost, pandas]
+stack: [Python, scikit-learn, XGBoost]
 featured: true
 image: /assets/img/DropoutPredictionClustering.webp   # optional thumbnail in lists
 imageAlt: Hierarchical clustering of the student dataset in PCA space.
