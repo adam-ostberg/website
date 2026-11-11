@@ -10,8 +10,9 @@
   <meta name="description" content="{{ pageDescription }}">
   <link rel="canonical" href="{{ pageUrl }}">
   <meta name="color-scheme" content="light dark">
-  {#- Favicon: "AÖ" in Caveat. favicon.ico holds 16/32/48 px; iOS uses the apple-touch-icon. #}
+  {#- Favicon: "AÖ" in Caveat. favicon.ico holds 16/32/48 px; the 192 px PNG is for Google Search, which wants a larger multiple of 48; iOS uses the apple-touch-icon. #}
   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   {#- Link previews (LinkedIn, Slack, iMessage...). A project uses its own image; other pages share a 1200x630 card. #}
   <meta property="og:type" content="{{ 'website' if page.url == '/' else 'article' }}">
