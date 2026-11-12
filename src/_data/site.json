@@ -1,7 +1,8 @@
 {
   "name": "Adam Östberg",
   "tagline": "MSc Computer Science student at KTH",
-  "description": "MSc Computer Science student at KTH, focusing on machine learning and data science. Projects, CV and contact.",
+  "homeTitle": "Adam Östberg - Computer Science student at KTH",
+  "description": "MSc Computer Science student at KTH focused on ML. Built projects like a pipeline that scraped 4.3M grocery prices. Seeking a summer 2027 internship.",
   "url": "https://adamostberg.com",
   "lang": "en",
   "intro": "I'm a fourth-year engineering student at KTH, specialising in machine learning and AI. I've built a pipeline that collects 4.3 million grocery prices, and a product matcher that reaches 0.89 precision on data that had no labels to start from. I'm looking for an ML or software engineering internship for summer 2027. If you have something interesting, please email me.",

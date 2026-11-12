@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {%- set pageTitle = (title + " · " + site.name) if (title and page.url != "/") else site.name %}
+  {%- set pageTitle = (title + " · " + site.name) if (title and page.url != "/") else (site.homeTitle or site.name) %}
   {%- set pageDescription = summary or site.description %}
   {%- set pageUrl = site.url + page.url %}
   <title>{{ pageTitle }}</title>

@@ -155,6 +155,7 @@ main > h1 { margin-bottom: 2rem; }
   margin-bottom: 3.5rem;
 }
 .site-name { color: var(--fg); font-family: var(--name-font); font-weight: 600; font-size: 1.5rem; line-height: 1; }
+.site-header .nosnippet { display: contents; }
 .site-header nav { display: flex; gap: 1.25rem; align-items: center; }
 .site-header nav a { color: var(--muted); }
 .site-header nav a[aria-current="page"] { color: var(--fg); }
